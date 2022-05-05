@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Market - Arena Admin</title>
+    <title>Game Rates - Arena Admin</title>
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -120,13 +120,13 @@
                         class="app-menu__icon fa fa-play-circle"></i><span class="app-menu__label">Markets</span><i
                         class="treeview-indicator fa fa-angle-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a class="treeview-item active" href="bidding-history.html"><i
-                                class="icon fa fa-circle-o"></i>Manage
+                    <li><a class="treeview-item " href="bidding-history.html"><i class="icon fa fa-circle-o"></i>Manage
                             Markets</a></li>
                     <li><a class="treeview-item" href="winning-history.html"><i class="icon fa fa-circle-o"></i>Track
                             Live Game</a>
                     </li>
-                    <li><a class="treeview-item" href="winning-history.html"><i class="icon fa fa-circle-o"></i>Game
+                    <li><a class="treeview-item active" href="winning-history.html"><i
+                                class="icon fa fa-circle-o"></i>Game
                             Rates</a>
                     </li>
                     <li><a class="treeview-item " href="bid-history.html"><i class="icon fa fa-circle-o"></i>Bid
@@ -183,31 +183,30 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class=" fa fa-play-circle"></i>&nbsp;Manage Markets</h1>
+                <h1><i class="fa fa-gamepad" aria-hidden="true"></i>&nbsp;Game Rates</h1>
             </div>
         </div>
         <div class="tile">
+            <h3 class="tile-title"></h3>
             <button class=" btn btn-primary mb-4">+ Add Market</button>
             <div class="tile-body">
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered" id="sampleTable">
                         <thead>
                             <tr>
-                                <th>Market Name</th>
-                                <th>Open Time</th>
-                                <th>Close Time</th>
+                                <th>Game Name</th>
+                                <th>Game Rate</th>
                                 <th style="width: 135px;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>Tiger Nixon</td>
-                                <td>12:30 PM</td>
-                                <td>1:30 PM</td>
+                                <td>1230 rupee</td>
                                 <td class="d-flex justify-content-around"><button class="btn-sm btn-info"><i
-                                    class="fa fa-pencil cp" aria-hidden="true"></i>&nbsp;Edit</button><button
-                                class="btn-sm btn-danger"><i class="fa fa-trash cp"
-                                    aria-hidden="true"></i>&nbsp;Delete</button></td>
+                                            class="fa fa-pencil cp" aria-hidden="true"></i>&nbsp;Edit</button><button
+                                        class="btn-sm btn-danger"><i class="fa fa-trash cp"
+                                            aria-hidden="true"></i>&nbsp;Delete</button></td>
                             </tr>
                         </tbody>
                     </table>
