@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Affiliate - Arena Admin</title>
+    <title>Support - Arena Admin</title>
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -183,24 +183,26 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class="fa fa-share-alt" aria-hidden="true"></i>&nbsp;Affiliate</h1>
+                <h1><i class="fa fa-question-circle" aria-hidden="true"></i>&nbsp;Support</h1>
             </div>
         </div>
-        <div class="tile d-flex justify-content-start align-items-center">
-            <h5>Is Affiliate enable ?</h5>
-            <div class="toggle-flip ml-5">
-                <label>
-                    <input id="affiliate_on_off" type="checkbox" onclick="affiliate_button_clicked(this);"><span
-                        class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
-                </label>
+        <div class="tile">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5>Whatsapp</h5>
+                <img src="./assets//images/whatsapp.jpg" style="width: 100px;" alt="">
             </div>
-        </div>
-        <div id="reward_title_id"
-            class="tile reward_tile_input d-flex justify-content-center align-items-center flex-column">
-            <i class="fa fa-trophy text-warning mt-3 mb-3" style="font-size: 100px;" aria-hidden="true"></i>
-            <h4>Reward Per Affiliate</h4>
-            <input class="form-control mt-3" value="0" style="width: 100px;" type="text">
-            <button class="btn btn-success mt-5">Submit</button>
+            <div class="form-group row">
+                <label class="control-label col-md-3">Whatsapp Number</label>
+                <div class="col-md-8">
+                    <input class="form-control col-md-8" type="number" placeholder="Enter whatsapp number">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="control-label col-md-3">WhatsApp Default Message</label>
+                <div class="col-md-8">
+                    <textarea class="form-control col-md-8" placeholder=""> </textarea>
+                </div>
+            </div>
         </div>
     </main>
     <!-- Essential javascripts for application to work-->
@@ -224,7 +226,14 @@
                 document.getElementById('reward_title_id').className = 'tile reward_tile_input d-flex justify-content-center align-items-center flex-column'
             }
         }
-
+        // render file
+        var loadFile = function (event, preview_id) {
+            var output = document.getElementById(preview_id);
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        };
     </script>
 </body>
 
