@@ -10,12 +10,13 @@
   --default-text-1: #0e687a;
   --default-text-2: white;
   --default-text-3: black;
+  --default-border-1: #009688;
 }
 
 /* /////////////////////////////////////////////////// */
 /*  ////////////////// Global //////////////////*/
 /* //////////////////////////////////////////////// */
-.cp{
+.cp {
   cursor: pointer;
 }
 /* /////////////////////////////// */
@@ -235,4 +236,20 @@
 }
 .upcoming_combo {
   padding-top: 5px;
+}
+/* /////////////////////////////////////////////////// */
+/*  ////////////////// track live games //////////////////*/
+/* //////////////////////////////////////////////// */
+.live_game_card {
+  border: 1px solid var(--default-border-1);
+  width: 200px;
+  height: 150px;
+  position: relative;
+  margin: 10px 0px 10px 30px;
+  border-radius: 5px;
+}
+.live_game_card .live_game_circle {
+  position: absolute;
+  right: 6px;
+  top: 6px;
 }
