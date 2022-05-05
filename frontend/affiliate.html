@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deposits - Arena Admin</title>
+    <title>Affiliate - Arena Admin</title>
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -116,16 +116,17 @@
             <li><a class="app-menu__item " href="dashboard.html"><i class="app-menu__icon fa fa-home"></i><span
                         class="app-menu__label">Dashboard</span></a>
             </li>
-            <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
+            <li class="treeview"><a class="app-menu__item active" href="#" data-toggle="treeview"><i
                         class="app-menu__icon fa fa-play-circle"></i><span class="app-menu__label">Markets</span><i
                         class="treeview-indicator fa fa-angle-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a class="treeview-item" href="bidding-history.html"><i class="icon fa fa-circle-o"></i>Manage
+                    <li><a class="treeview-item " href="bidding-history.html"><i class="icon fa fa-circle-o"></i>Manage
                             Markets</a></li>
                     <li><a class="treeview-item" href="winning-history.html"><i class="icon fa fa-circle-o"></i>Track
                             Live Game</a>
                     </li>
-                    <li><a class="treeview-item" href="winning-history.html"><i class="icon fa fa-circle-o"></i>Game
+                    <li><a class="treeview-item active" href="winning-history.html"><i
+                                class="icon fa fa-circle-o"></i>Game
                             Rates</a>
                     </li>
                     <li><a class="treeview-item " href="bid-history.html"><i class="icon fa fa-circle-o"></i>Bid
@@ -139,13 +140,13 @@
                     </li>
                 </ul>
             </li>
-            <li class="treeview"><a class="app-menu__item active" href="#" data-toggle="treeview"><i
+            <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
                         class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Payment</span><i
                         class="treeview-indicator fa fa-angle-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a class="treeview-item active" href="deposits.html"><i
+                    <li><a class="treeview-item" href="form-components.html"><i
                                 class="icon fa fa-circle-o"></i>Deposits</a></li>
-                    <li><a class="treeview-item" href="withdrawal.html"><i class="icon fa fa-circle-o"></i>
+                    <li><a class="treeview-item" href="form-custom.html"><i class="icon fa fa-circle-o"></i>
                             Withdrawals</a></li>
                 </ul>
             </li>
@@ -182,24 +183,24 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class="fa fa-money" aria-hidden="true"></i>&nbsp;Deposits</h1>
+                <h1><i class="fa fa-share-alt" aria-hidden="true"></i>&nbsp;Affiliate</h1>
             </div>
         </div>
-        <div class="tile">
-            <div class="tile-body">
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered" id="sampleTable">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                           
-                        </tbody>
-                    </table>
-                </div>
+        <div class="tile d-flex justify-content-start align-items-center">
+            <h5>Is Affiliate enable ?</h5>
+            <div class="toggle-flip ml-5">
+                <label>
+                    <input id="affiliate_on_off" type="checkbox" onclick="affiliate_button_clicked(this);"><span
+                        class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
+                </label>
             </div>
+        </div>
+        <div id="reward_title_id"
+            class="tile reward_tile_input d-flex justify-content-center align-items-center flex-column">
+            <i class="fa fa-trophy text-warning mt-3 mb-3" style="font-size: 100px;" aria-hidden="true"></i>
+            <h4>Reward Per Affiliate</h4>
+            <input class="form-control mt-3" value="0" style="width: 100px;" type="number">
+            <button class="btn btn-success mt-5">Submit</button>
         </div>
     </main>
     <!-- Essential javascripts for application to work-->
@@ -215,6 +216,15 @@
     <script type="text/javascript">
         // onload
         $(".myAlert-top").hide();
+        // handle affiliate button click
+        function affiliate_button_clicked(val) {
+            if (val.checked) {
+                document.getElementById('reward_title_id').className = 'tile  d-flex justify-content-center align-items-center flex-column'
+            } else {
+                document.getElementById('reward_title_id').className = 'tile reward_tile_input d-flex justify-content-center align-items-center flex-column'
+            }
+        }
+
     </script>
 </body>
 
