@@ -2817,13 +2817,13 @@ fieldset:disabled a.btn {
 .btn-primary {
   color: #fff;
   background-color: var(--default-bg-2);
-  border-color: var(--default-text-1);
+  border-color: var(--default-text-2);
 }
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #007065;
-  border-color: #00635a;
+  background-color: var(--default-bg-1);
+  border-color: var(--default-border-1);
 }
 
 .btn-primary:focus,
