@@ -11,7 +11,7 @@ $token = $_COOKIE["jwt"];
 if(auth($token)){
 
     //fetch details from market
-    $sql = "SELECT * FROM user_table ";
+    $sql = "SELECT * FROM user_table ORDER BY user_id DESC";
     $query = $con -> prepare($sql);
     if($query->execute()){
         $users = $query->fetchAll(PDO::FETCH_OBJ);

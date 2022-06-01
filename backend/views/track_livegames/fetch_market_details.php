@@ -15,7 +15,7 @@ if(auth($token)){
 
     $market_id = $_POST['market_id'];
     //fetch details from market
-    $sql = "SELECT * FROM market_table WHERE market_id = :market_id";
+    $sql = "SELECT * FROM betting_history WHERE market_id = :market_id";
     $query = $con -> prepare($sql);
     $query->bindparam("market_id", $market_id, PDO::PARAM_STR);
     if($query->execute()){
