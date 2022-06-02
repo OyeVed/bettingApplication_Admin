@@ -46,12 +46,12 @@ if($query->rowCount() === 0){
         $serverName = "http://localhost/matkaApplicaton/backend/login";     // Retrieved from filtered POST data
 
         $data = [
-            'iat'  => $issuedAt->getTimestamp(),         // Issued at: time when the token was generated
-            'iss'  => $serverName,                       // Issuer
-            'nbf'  => $issuedAt->getTimestamp(),         // Not before
-            'exp'  => $expire,                           // Expire
-            'adminName' => $admin->admin_phonenumber,    //admin name
-            'adminid' =>  $admin->admin_user_id          // admin id           
+            'iat'  => $issuedAt->getTimestamp(),                 // Issued at: time when the token was generated
+            'iss'  => $serverName,                               // Issuer
+            'nbf'  => $issuedAt->getTimestamp(),                 // Not before
+            'exp'  => $expire,                                   // Expire
+            'admin_phonenumber' => $admin->admin_phonenumber,    //admin name
+            'admin_id' =>  $admin->admin_user_id                 // admin id           
         ];
 
         $jwt =  JWT::encode(
