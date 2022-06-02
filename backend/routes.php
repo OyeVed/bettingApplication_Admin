@@ -4,7 +4,7 @@
 $router->endpoint('login', './views/login', ['POST'], FALSE, ['phone_number', 'password']);
 $router->endpoint('signup', './views/signup', ['POST'], FALSE, ['phone_number', 'password', 'email', 'full_name']);
 $router->endpoint('logout', './views/logout', ['POST'], FALSE, ['phone_number']);
-$router->endpoint('reset_password', './views/reset_password', ['POST'], FALSE, ['old_password', 'new_password', 'confirm_password', 'phone_number']);
+$router->endpoint('reset_password', './views/reset_password', ['POST'], FALSE, ['old_password', 'new_password', 'phone_number']);
 
 // markets/manage_markets all routes
 $router->endpoint('fetch_market', './views/markets/manage_markets/fetch_market', ['GET'], FALSE, []);
@@ -36,3 +36,6 @@ $router->endpoint('delete_customers', './views/customers/delete_customers', ['PO
 //track_live games
 $router->endpoint('fetch_livegames', './views/track_livegames/fetch_livegames', ['GET'], []);
 $router->endpoint('fetch_market_details', './views/track_livegames/fetch_market_details', ['GET'], ['market_id']);
+
+//dashboard 
+$router->endpoint('dashboard', './views/dashboard', ['GET'], FALSE, []);
