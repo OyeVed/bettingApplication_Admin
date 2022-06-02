@@ -244,6 +244,49 @@
 
         </div>
     </div>
+    <!-- edit market modal -->
+    <div class="modal fade" id="edit_market_modal" role="dialog">
+        <div class="modal-dialog  modal-dialog-centered ">
+
+            <!-- Modal content-->
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Market<br />
+                        <p style="text-align:left; font-size:13px;font-weight:500;">
+                        <p>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="uploadPreAssessmentId">
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Market Name</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" placeholder="-" id="edit_market_name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Start Time</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="time" id="edit_market_start">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">End Time</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="time" id="edit_market_end">
+                            </div>
+                        </div>
+                        <div class="modal-footer " style="justify-content: center;margin-top:20px;">
+                            <button class="btn btn-success" type="button" id="edit_save_btn">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <!-- Essential javascripts for application to work-->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>
@@ -255,6 +298,7 @@
     <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
+        let marketList = []
         window.onload = function () {
             getMarketList()
         }
@@ -264,6 +308,7 @@
                 endLoader()
                 if (response.status === 200) {
                     let dataSet = response.data?.msg
+                    marketList = dataSet
                     $(document).ready(function () {
                         $('#sampleTable').DataTable().destroy();
                         $('#sampleTable').DataTable({
@@ -288,7 +333,7 @@
                                     data: 'market_id',
                                     render: function (data) {
                                         return `<div class="d-flex justify-content-around" >
-                                            <button class="btn-sm btn-info"><i
+                                            <button class="btn-sm btn-info" onclick="setEditForm(${data})" data-toggle="modal" data-target="#edit_market_modal" ><i
                                           class="fa fa-pencil cp" aria-hidden="true"></i>&nbsp;Edit</button><button
                                          class="btn-sm btn-danger"><i class="fa fa-trash cp"
                                            aria-hidden="true"></i>&nbsp;Delete</button>
@@ -376,6 +421,89 @@
                 "market_fullname": add_market_name,
                 "market_opentime": add_market_start + ":00",
                 "market_closetime": add_market_end + ":00"
+            }).then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-check'
+                    }, {
+                        type: "success",
+                    });
+                    getMarketList();
+                } else {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger",
+                    });
+                }
+            }, (error) => {
+                console.log('error', error);
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
+        }
+        function setEditForm(m_id) {
+            let marketNow = marketList?.filter(m => m?.market_id === `${m_id}`)
+            if (marketNow?.length > 0) {
+                document.getElementById('edit_market_name').value = marketNow[0]?.market_fullname
+                document.getElementById('edit_market_start').value = marketNow[0]?.market_opentime
+                document.getElementById('edit_market_end').value = marketNow[0]?.market_closetime
+                document.getElementById('edit_save_btn').setAttribute("onClick", `updateMarket(${m_id})`);
+            }
+        }
+        function updateMarket(m_id) {
+            startLoader()
+            let edit_market_name = document.getElementById('edit_market_name').value;
+            let edit_market_start = document.getElementById('edit_market_start').value;
+            let edit_market_end = document.getElementById('edit_market_end').value
+            if (edit_market_start?.length < 6) {
+                edit_market_start = edit_market_start + ":00";
+            }
+            if (edit_market_end?.length < 6) {
+                edit_market_end = edit_market_end + ":00";
+            }
+            if (edit_market_name === "") {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Please enter market name.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            }
+            let edit_market_start_time = new Date(`Jan 1,2022 ${edit_market_start}:00`).getTime()
+            let edit_market_end_time = new Date(`Jan 1,2022 ${edit_market_end}:00`).getTime()
+            let diff = edit_market_end_time - edit_market_start_time
+            if (diff < 1) {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Please enter valid end time.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            }
+            $('#edit_market_modal').modal('hide');
+            axiosInstance.post('edit_market', {
+                "market_id": m_id,
+                "market_fullname": edit_market_name,
+                "market_opentime": edit_market_start,
+                "market_closetime": edit_market_end
             }).then((response) => {
                 endLoader()
                 if (response.status === 200) {
