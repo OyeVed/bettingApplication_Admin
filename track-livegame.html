@@ -20,11 +20,6 @@
 
 <body class="app sidebar-mini">
     <!-- NOTE: START: -->
-    <!-- Alert -->
-    <div class="myAlert-top alert alert-success" id="alert_div">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        Indicates a successful or positive action 123.
-    </div>
     <!-- loader -->
     <div class="overlay"></div>
     <div class="spanner">
@@ -116,11 +111,11 @@
             <li><a class="app-menu__item " href="dashboard.html"><i class="app-menu__icon fa fa-home"></i><span
                         class="app-menu__label">Dashboard</span></a>
             </li>
-            <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
+            <li class="treeview"><a class="app-menu__item active" href="#" data-toggle="treeview"><i
                         class="app-menu__icon fa fa-play-circle"></i><span class="app-menu__label">Markets</span><i
                         class="treeview-indicator fa fa-angle-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a class="treeview-item active" href="manage-markets.html"><i
+                <ul class="treeview-menu ">
+                    <li><a class="treeview-item" href="manage-markets.html"><i
                                 class="icon fa fa-circle-o"></i>Manage
                             Markets</a></li>
                     <li><a class="treeview-item active" href="track-livegame.html"><i
@@ -259,8 +254,7 @@
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">$('#sampleTable').DataTable();</script>
     <script type="text/javascript">
-        // onload
-        $(".myAlert-top").hide();
+        
     </script>
 </body>
 

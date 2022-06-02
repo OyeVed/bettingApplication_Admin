@@ -549,7 +549,6 @@
                 closeOnCancel: false
             }, function (isConfirm) {
                 if (isConfirm) {
-                    swal("Deleted!", "Your imaginary file has been deleted.", "success");
                     startLoader()
                     axiosInstance.post('delete_market', {
                         "market_id": m_id
