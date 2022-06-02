@@ -7,7 +7,12 @@ function endLoader() {
   $("div.spanner").removeClass("show");
   $("div.overlay").removeClass("show");
 }
-
+function authenticate() {
+  let isLoggedIn = localStorage.getItem("isLoggedIn");
+  if (isLoggedIn === "false" || isLoggedIn === null) {
+    location.href = "index.html";
+  }
+}
 const axiosInstance = axios.create({
   baseURL: `/bettingApplication_Admin/backend/`,
   credentials: "include",
@@ -53,6 +58,7 @@ function signOut() {
       (response) => {
         endLoader();
         if (response.status === 200) {
+          localStorage.setItem("isLoggedIn", "false");
           location.href = "index.html";
         } else {
           $.notify(

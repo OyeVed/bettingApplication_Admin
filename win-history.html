@@ -214,6 +214,7 @@
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">$('#sampleTable').DataTable();</script>
     <script type="text/javascript">
+        authenticate();
         window.onload = function () {
             startLoader()
             axiosInstance.get('win_history').then((response) => {

@@ -20,11 +20,6 @@
 
 <body class="app sidebar-mini">
     <!-- NOTE: START: -->
-    <!-- Alert -->
-    <div class="myAlert-top alert alert-success" id="alert_div">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        Indicates a successful or positive action 123.
-    </div>
     <!-- loader -->
     <div class="overlay"></div>
     <div class="spanner">
@@ -213,8 +208,7 @@
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">$('#sampleTable').DataTable();</script>
     <script type="text/javascript">
-        // onload
-        $(".myAlert-top").hide();
+         authenticate();
         // handle affiliate button click
         function affiliate_button_clicked(val) {
             if (val.checked) {

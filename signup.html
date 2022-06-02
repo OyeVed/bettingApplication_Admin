@@ -77,6 +77,10 @@
     <script src="./js/globalFunction.js"></script>
     <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
     <script type="text/javascript">
+        let isLoggedIn = localStorage.getItem("isLoggedIn");
+        if (isLoggedIn === "true") {
+            location.href = "dashboard.html";
+        }
         // login request
         function handleUserLogin() {
             startLoader()
