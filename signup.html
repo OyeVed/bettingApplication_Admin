@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login - Arena Admin</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- NOTE: START: -->
+    <!-- loader -->
+    <div class="overlay"></div>
+    <div class="spanner">
+        <div class="loader"></div>
+        <!-- <p>Uploading music file, please be patient.</p> -->
+    </div>
+    <!-- END: -->
+    <section class="material-half-bg">
+        <div class="cover"></div>
+    </section>
+    <section class="login-content">
+        <div class="logo">
+            <h1>Arena Admin</h1>
+        </div>
+        <div class="login-box" style="min-height: 630px;width: 500px;">
+            <form class="login-form">
+                <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN UP</h3>
+                <div class="form-group">
+                    <label class="text-white">Name</label>
+                    <input class="form-control" id="signup_name" type="text" placeholder="Name" autofocus>
+                </div>
+                <div class="form-group">
+                    <label class="text-white">Email</label>
+                    <input class="form-control" id="signup_email" type="email" placeholder="Email" autofocus>
+                </div>
+                <div class="form-group">
+                    <label class="text-white">Phone Number</label>
+                    <input class="form-control" maxlength="10" id="signup_phone" type="text" placeholder="Phone Number"
+                        oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+                </div>
+                <div class="form-group">
+                    <label class="text-white">Password</label>
+                    <input class="form-control" id="signup_password" type="password" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <label class="text-white">Confirm Password</label>
+                    <input class="form-control" id="signup_c_password" type="password" placeholder="Confirm Password">
+                </div>
+                <div class="form-group btn-container">
+                    <button type="button" onclick="handleUserLogin()" class="btn btn-primary btn-block"><i
+                            class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>
+                </div>
+                <p class="semibold-text mt-4 text-center"><a href="index.html" style="color:  rgb(186, 179, 179);">Sing
+                        In</a></p>
+            </form>
+        </div>
+    </section>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <script src="./js/globalFunction.js"></script>
+    <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
+    <script type="text/javascript">
+        // login request
+        function handleUserLogin() {
+            startLoader()
+            let name = document.getElementById('signup_name').value
+            let email = document.getElementById('signup_email').value
+            let phone = document.getElementById('signup_phone').value
+            let password = document.getElementById('signup_password').value
+            let c_password = document.getElementById('signup_c_password').value
+            if (password !== c_password || password === "") {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Password didn't match.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            } else if (phone?.length < 10) {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Invalid phone number.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            } else if (!validateEmail(email)) {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Invalid email format.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            }
+            axiosInstance.post('signup',
+                {
+                    "phone_number": phone,
+                    "password": password,
+                    "email": email,
+                    "full_name": name
+                }
+            ).then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    location.href = "index.html";
+                } else {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger",
+                    });
+                }
+            }, (error) => {
+                endLoader()
+                console.log('error', error);
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
+        }
+    </script>
+</body>
+
+</html>

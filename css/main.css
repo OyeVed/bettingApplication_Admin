@@ -6675,11 +6675,13 @@ a.close.disabled {
   border-bottom: 1px solid #dee2e6;
   border-top-left-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
+  background: var(--default-bg-2);
 }
 
 .modal-header .close {
   padding: 1rem 1rem;
   margin: -1rem -1rem -1rem auto;
+  color: #6c757d;
 }
 
 .modal-title {
@@ -6693,6 +6695,7 @@ a.close.disabled {
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
   padding: 1rem;
+  background: var(--default-bg-2);
 }
 
 .modal-footer {

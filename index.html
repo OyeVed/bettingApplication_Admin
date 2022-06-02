@@ -20,11 +20,6 @@
 
 <body>
     <!-- NOTE: START: -->
-    <!-- Alert -->
-    <div class="myAlert-top alert alert-success" id="alert_div">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        Indicates a successful or positive action.
-    </div>
     <!-- loader -->
     <div class="overlay"></div>
     <div class="spanner">
@@ -39,23 +34,24 @@
         <div class="logo">
             <h1>Arena Admin</h1>
         </div>
-        <div class="login-box">
-            <form class="login-form">
+        <div class="login-box" style="min-height: 430px;width: 400px;">
+            <form class="login-form" >
                 <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
                 <div class="form-group">
-                    <label class="text-white">USERNAME</label>
-                    <input class="form-control" id="login_username" type="text" placeholder="username" autofocus>
+                    <label class="text-white">Phone Number</label>
+                    <input class="form-control" maxlength="10" id="login_phone" type="text" placeholder="Phone Number"
+                        autofocus oninput="this.value=this.value.replace(/[^0-9]/g,'');">
                 </div>
                 <div class="form-group">
-                    <label class="text-white">PASSWORD</label>
+                    <label class="text-white">Password</label>
                     <input class="form-control" id="login_password" type="password" placeholder="Password">
                 </div>
                 <div class="form-group">
                     <div class="utility">
                         <div class="animated-checkbox">
-                            <label class="text-white">
+                            <!-- <label class="text-white">
                                 <input type="checkbox"><span class="label-text">Stay Signed in</span>
-                            </label>
+                            </label> -->
                         </div>
                         <p class="semibold-text mb-2 "><a href="#" data-toggle="flip"
                                 style="color: rgb(136, 174, 193);">Forgot
@@ -66,6 +62,8 @@
                     <button type="button" onclick="handleUserLogin()" class="btn btn-primary btn-block"><i
                             class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>
                 </div>
+                <p class="semibold-text mt-4 text-center"><a href="signup.html"
+                    style="color:  rgb(186, 179, 179);">Sign Up</a></p>
             </form>
             <form class="forget-form" action="dashboard.html">
                 <h3 class="login-head"><i class="fa fa-lg fa-fw fa-lock"></i>Forgot Password ?</h3>
@@ -92,9 +90,8 @@
     <!-- The javascript plugin to display page loading on top-->
     <script src="js/plugins/pace.min.js"></script>
     <script src="./js/globalFunction.js"></script>
+    <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
     <script type="text/javascript">
-        // onload
-        $(".myAlert-top").hide();
         // Login Page Flipbox control
         $('.login-content [data-toggle="flip"]').click(function () {
             $('.login-box').toggleClass('flipped');
@@ -102,29 +99,39 @@
         });
         // login request
         function handleUserLogin() {
-            location.href = "dashboard.html";
             startLoader()
-            // let username = document.getElementById('login_username').value
-            // let password = document.getElementById('login_password').value
-            // // TODO: remove gameApplication
-            // axios.post('/gameApplication/backend/login/',
-            //     {
-            //         "username": username,
-            //         "password": password
-            //     }
-            // ).then((response) => {
-            //     endLoader()
-            //     if (response.status === 200) {
-            //         showAlert('success', response.data?.msg)
-            //         location.href = "home.html";
-            //     } else {
-            //         showAlert('danger', response.data?.msg)
-            //     }
-            // }, (error) => {
-            //     endLoader()
-            //     console.log('error', error);
-            //     showAlert('danger', 'Something went wrong! Please try again.')
-            // })
+            let phone = document.getElementById('login_phone').value
+            let password = document.getElementById('login_password').value
+            // TODO: remove gameApplication
+            axiosInstance.post('login',
+                {
+                    "phone_number": phone,
+                    "password": password
+                }
+            ).then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    location.href = "dashboard.html";
+                } else {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger",
+                    });
+                }
+            }, (error) => {
+                endLoader()
+                console.log('error', error);
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
         }
     </script>
 </body>

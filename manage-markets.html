@@ -20,11 +20,6 @@
 
 <body class="app sidebar-mini">
     <!-- NOTE: START: -->
-    <!-- Alert -->
-    <div class="myAlert-top alert alert-success" id="alert_div">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        Indicates a successful or positive action 123.
-    </div>
     <!-- loader -->
     <div class="overlay"></div>
     <div class="spanner">
@@ -120,7 +115,8 @@
                         class="app-menu__icon fa fa-play-circle"></i><span class="app-menu__label">Markets</span><i
                         class="treeview-indicator fa fa-angle-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a class="treeview-item active" href="manage-markets.html"><i class="icon fa fa-circle-o"></i>Manage
+                    <li><a class="treeview-item active" href="manage-markets.html"><i
+                                class="icon fa fa-circle-o"></i>Manage
                             Markets</a></li>
                     <li><a class="treeview-item" href="track-livegame.html"><i class="icon fa fa-circle-o"></i>Track
                             Live Game</a>
@@ -186,7 +182,8 @@
             </div>
         </div>
         <div class="tile">
-            <button class="btn btn-sm btn-primary mb-4">+ Add Market</button>
+            <button class="btn btn-sm btn-primary mb-4" data-toggle="modal" data-target="#add_market_modal">+ Add
+                Market</button>
             <div class="tile-body">
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered" id="sampleTable">
@@ -198,35 +195,219 @@
                                 <th style="width: 135px;">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>12:30 PM</td>
-                                <td>1:30 PM</td>
-                                <td class="d-flex justify-content-around"><button class="btn-sm btn-info"><i
-                                    class="fa fa-pencil cp" aria-hidden="true"></i>&nbsp;Edit</button><button
-                                class="btn-sm btn-danger"><i class="fa fa-trash cp"
-                                    aria-hidden="true"></i>&nbsp;Delete</button></td>
-                            </tr>
-                        </tbody>
+                        <tbody id="market_body_id"></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </main>
+    <!-- add market modal -->
+    <div class="modal fade" id="add_market_modal" role="dialog">
+        <div class="modal-dialog  modal-dialog-centered ">
+
+            <!-- Modal content-->
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Market<br />
+                        <p style="text-align:left; font-size:13px;font-weight:500;">
+                        <p>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="uploadPreAssessmentId">
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Market Name</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" placeholder="-" id="add_market_name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Start Time</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="time" id="add_market_start">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">End Time</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="time" id="add_market_end">
+                            </div>
+                        </div>
+                        <div class="modal-footer " style="justify-content: center;margin-top:20px;">
+                            <button class="btn btn-success" type="button" onclick="addMarket()">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <!-- Essential javascripts for application to work-->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script src="./js/globalFunction.js"></script>
+    <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
     <!-- Data table plugin-->
     <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$('#sampleTable').DataTable();</script>
     <script type="text/javascript">
-        // onload
-        $(".myAlert-top").hide();
+        window.onload = function () {
+            getMarketList()
+        }
+        function getMarketList() {
+            startLoader()
+            axiosInstance.get('fetch_market').then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    let dataSet = response.data?.msg
+                    $(document).ready(function () {
+                        $('#sampleTable').DataTable().destroy();
+                        $('#sampleTable').DataTable({
+                            data: dataSet,
+                            columns: [
+                                {
+                                    data: 'market_fullname',
+                                },
+                                {
+                                    data: 'market_opentime',
+                                    render: function (data) {
+                                        return convertTime(data);
+                                    },
+                                },
+                                {
+                                    data: 'market_closetime',
+                                    render: function (data) {
+                                        return convertTime(data);
+                                    },
+                                },
+                                {
+                                    data: 'market_id',
+                                    render: function (data) {
+                                        return `<div class="d-flex justify-content-around" >
+                                            <button class="btn-sm btn-info"><i
+                                          class="fa fa-pencil cp" aria-hidden="true"></i>&nbsp;Edit</button><button
+                                         class="btn-sm btn-danger"><i class="fa fa-trash cp"
+                                           aria-hidden="true"></i>&nbsp;Delete</button>
+                                            </div>`;
+                                    },
+                                },
+                            ],
+                        });
+                    });
+                } else {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger",
+                    });
+                }
+            }, (error) => {
+                console.log('error', error);
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
+        }
+        function addMarket() {
+            startLoader()
+            let add_market_name = document.getElementById('add_market_name').value;
+            let add_market_start = document.getElementById('add_market_start').value;
+            let add_market_end = document.getElementById('add_market_end').value
+            if (add_market_name === "") {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Please enter market name.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            }
+            let add_market_start_time = new Date(`Jan 1,2022 ${add_market_start}:00`).getTime()
+            let add_market_end_time = new Date(`Jan 1,2022 ${add_market_end}:00`).getTime()
+            let diff = add_market_end_time - add_market_start_time
+            if (add_market_start === "") {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Please enter start time.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            }
+            if (add_market_end === "") {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Please enter end time.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            }
+            if (diff < 1) {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Please enter valid end time.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            }
+            $('#add_market_modal').modal('hide');
+            axiosInstance.post('add_market', {
+                "market_fullname": add_market_name,
+                "market_opentime": add_market_start + ":00",
+                "market_closetime": add_market_end + ":00"
+            }).then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-check'
+                    }, {
+                        type: "success",
+                    });
+                    getMarketList();
+                } else {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger",
+                    });
+                }
+            }, (error) => {
+                console.log('error', error);
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
+        }
     </script>
 </body>
 
