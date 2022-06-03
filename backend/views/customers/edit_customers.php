@@ -16,7 +16,7 @@ if(auth($token)){
     $user_id = $_POST['user_id'];
 
     //fetch details from query parameter
-    $phonenumber = $_POST['phonenumber'];
+    $phone_number = $_POST['phone_number'];
     $full_name = $_POST['full_name'];
     $email = $_POST['email'];
     $password = md5($_POST['password']);

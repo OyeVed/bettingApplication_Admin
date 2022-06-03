@@ -30,7 +30,7 @@ $router->endpoint('delete_result', './views/markets/results/delete_result', ['PO
 
 // customers details related routes
 $router->endpoint('fetch_customers', './views/customers/fetch_customers', ['GET'], FALSE, []);
-$router->endpoint('edit_customers', './views/customers/edit_customers', ['POST'], FALSE, ['user_id', 'phonenumber', 'full_name', 'password', 'email']);
+$router->endpoint('edit_customers', './views/customers/edit_customers', ['POST'], FALSE, ['user_id', 'phone_number', 'full_name', 'password', 'email']);
 $router->endpoint('delete_customers', './views/customers/delete_customers', ['POST'], FALSE, ['user_id']);
 
 //track_live games

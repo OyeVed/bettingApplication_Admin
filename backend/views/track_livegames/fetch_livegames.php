@@ -27,6 +27,7 @@ if(auth($token)){
                 $total_closed_games += 1;
             }
             $market_details = [
+                "market_id" => $market->market_id,
                 "market_fullname" => $market->market_fullname,
                 "market_opentime" => $market->market_opentime,
                 "market_closetime" => $market->market_closetime,
