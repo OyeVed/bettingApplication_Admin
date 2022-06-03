@@ -220,7 +220,6 @@
                 endLoader()
                 if (response.status === 200) {
                     let dataSet = response.data?.msg
-                    gameRateList = dataSet
                     $(document).ready(function () {
                         $('#sampleTable').DataTable().destroy();
                         $('#sampleTable').DataTable({

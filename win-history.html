@@ -186,12 +186,12 @@
                     <table class="table table-hover table-bordered" id="sampleTable">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
+                                <th>User Id</th>
+                                <th>Transaction Id</th>
+                                <th>Transaction Type</th>
+                                <th>Transaction Name</th>
+                                <th>Transaction Amount</th>
+                                <th>Wallet Amount</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -220,7 +220,33 @@
             axiosInstance.get('win_history').then((response) => {
                 endLoader()
                 if (response.status === 200) {
-
+                    let dataSet = response.data?.msg
+                    $(document).ready(function () {
+                        $('#sampleTable').DataTable().destroy();
+                        $('#sampleTable').DataTable({
+                            data: dataSet,
+                            columns: [
+                                {
+                                    data: 'user_id',
+                                },
+                                {
+                                    data: 'transaction_id',
+                                },
+                                {
+                                    data: 'transaction_type',
+                                },
+                                {
+                                    data: 'transaction_name',
+                                },
+                                {
+                                    data: 'transaction_amount',
+                                },
+                                {
+                                    data: 'amount_in_wallet',
+                                },
+                            ],
+                        });
+                    });
                 } else {
                     $.notify({
                         title: "",
