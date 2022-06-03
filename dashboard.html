@@ -254,69 +254,13 @@
                         <thead>
                             <tr>
                                 <th>Market Name</th>
+                                <th>Status</th>
                                 <th>Open Time</th>
                                 <th>Close Time</th>
-                                <th>Jodi</th>
-                                <th>Total</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>4:30 PM</td>
-                                <td>5:30 PM</td>
-                                <td>400</td>
-                            </tr>
-                            <tr>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>4:30 PM</td>
-                                <td>5:30 PM</td>
-                                <td>400</td>
-                            </tr>
-                            <tr>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>4:30 PM</td>
-                                <td>5:30 PM</td>
-                                <td>400</td>
-                            </tr>
-                            <tr>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>4:30 PM</td>
-                                <td>5:30 PM</td>
-                                <td>400</td>
-                            </tr>
-                            <tr>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>4:30 PM</td>
-                                <td>5:30 PM</td>
-                                <td>400</td>
-                            </tr>
-                            <tr>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>4:30 PM</td>
-                                <td>5:30 PM</td>
-                                <td>400</td>
-                            </tr>
-                            <tr>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>4:30 PM</td>
-                                <td>5:30 PM</td>
-                                <td>400</td>
-                            </tr>
-                            <tr>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>4:30 PM</td>
-                                <td>5:30 PM</td>
-                                <td>400</td>
-                            </tr>
+                        <tbody id="market_details_table">
+
                         </tbody>
                     </table>
                 </div>
@@ -329,8 +273,49 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script src="./js/globalFunction.js"></script>
+    <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
     <script type="text/javascript">
         authenticate();
+        window.onload = function () {
+            startLoader()
+            axiosInstance.get('dashboard').then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    let dataSet = response.data?.msg
+                    let market_details_table = document.getElementById('market_details_table')
+                    market_details_table.innerHTML = ''
+                    for (let i = 0; i < dataSet.length; i++) {
+                        market_details_table.innerHTML = market_details_table.innerHTML +
+                            `
+                        <tr>
+                                <td>${dataSet[i]?.market_fullname}</td>
+                                <td>${dataSet[0]?.market_status}</td>
+                                <td>${convertTime(dataSet[0]?.market_opentime)}</td>
+                                <td>${convertTime(dataSet[0]?.market_closetime)}</td>
+                            </tr>`
+                    }
+                } else {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger",
+                    });
+                }
+                console.log(response)
+            }, (error) => {
+                console.log('error', error);
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
+        }
     </script>
 </body>
 
