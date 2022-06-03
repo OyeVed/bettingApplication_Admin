@@ -181,41 +181,377 @@
             </div>
         </div>
         <div class="tile">
-            <button class="btn btn-sm btn-primary mb-4">+ Add Result</button>
+            <button class="btn btn-sm btn-primary mb-4" data-toggle="modal" data-target="#add_game_rate_modal">+ Add
+                Result</button>
             <div class="tile-body">
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered" id="sampleTable">
                         <thead>
                             <tr>
-                                <th>Id</th>
-                                <th>Game Name</th>
+                                <th>Market Name</th>
                                 <th>Result</th>
+                                <th style="width: 135px;">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>1few0</td>
-                                <td>Tiger Nixon</td>
-                                <td>gg</td>
-                            </tr>
-                        </tbody>
+                        <tbody> </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </main>
+    <!-- add game rate modal -->
+    <div class="modal fade" id="add_game_rate_modal" role="dialog">
+        <div class="modal-dialog  modal-dialog-centered ">
+
+            <!-- Modal content-->
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Result<br />
+                        <p style="text-align:left; font-size:13px;font-weight:500;">
+                        <p>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="uploadPreAssessmentId">
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Market Name</label>
+                            <div class="col-md-8">
+                                <select class="form-control" id="add_market_name">
+                                    <option value="">-Select market name-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Result</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" id="add_game_result">
+                            </div>
+                        </div>
+                        <div class="modal-footer " style="justify-content: center;margin-top:20px;">
+                            <button class="btn btn-success" type="button" onclick="addGameResult()">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- edit game result modal -->
+    <div class="modal fade" id="edit_game_rate_modal" role="dialog">
+        <div class="modal-dialog  modal-dialog-centered ">
+
+            <!-- Modal content-->
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Result<br />
+                        <p style="text-align:left; font-size:13px;font-weight:500;">
+                        <p>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="uploadPreAssessmentId">
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Market Name</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" id="edit_market_name" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Result</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" id="edit_game_result">
+                            </div>
+                        </div>
+                        <div class="modal-footer " style="justify-content: center;margin-top:20px;">
+                            <button class="btn btn-success" type="button" id="edit_save_btn">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <!-- Essential javascripts for application to work-->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script src="./js/globalFunction.js"></script>
+    <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
+    <script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>
     <!-- Data table plugin-->
     <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$('#sampleTable').DataTable();</script>
     <script type="text/javascript">
-         authenticate();
+        authenticate();
+        let marketList = []
+        let gameResultList = [];
+        window.onload = function () {
+            getGameResultList()
+        }
+        function getGameResultList() {
+            startLoader()
+            axiosInstance.get('fetch_market').then((response) => {
+                if (response.status === 200) {
+                    marketList = response.data?.msg
+                    let market_dropdown = document.getElementById('add_market_name')
+                    market_dropdown.innerHTML = `<option value="">-Select market name-</option>`
+                    for (let i = 0; i < marketList.length; i++) {
+                        market_dropdown.innerHTML = market_dropdown.innerHTML + `<option value="${marketList[i]?.market_id}">${marketList[i]?.market_fullname}</option>`
+                    }
+                    let market_dropdown_edit = document.getElementById('edit_market_name')
+                    market_dropdown_edit.innerHTML = `<option value="">-Select market name-</option>`
+                    for (let i = 0; i < marketList.length; i++) {
+                        market_dropdown_edit.innerHTML = market_dropdown_edit.innerHTML + `<option value="${marketList[i]?.market_id}">${marketList[i]?.market_fullname}</option>`
+                    }
+                    axiosInstance.get('fetch_result').then((response) => {
+                        endLoader()
+                        if (response.status === 200) {
+                            console.log(response)
+                            let dataSet = response.data?.msg
+                            gameResultList = dataSet
+                            $(document).ready(function () {
+                                $('#sampleTable').DataTable().destroy();
+                                $('#sampleTable').DataTable({
+                                    data: dataSet,
+                                    columns: [
+                                        {
+                                            data: 'market_id',
+                                            render: function (data) {
+                                                let marketListFind = marketList?.filter(m => m?.market_id === data)
+                                                if (marketListFind?.length > 0) {
+                                                    return `${marketListFind[0]?.market_fullname}`;
+                                                }
+                                                return `${data}`
+                                            },
+                                        },
+                                        {
+                                            data: 'results',
+                                        },
+                                        {
+                                            data: 'result_id',
+                                            render: function (data) {
+                                                return `<div class="d-flex justify-content-around" >
+                                            <button class="btn-sm btn-info" onclick="setEditForm(${data})" data-toggle="modal" data-target="#edit_game_rate_modal" ><i
+                                          class="fa fa-pencil cp" aria-hidden="true"></i>&nbsp;Edit</button><button
+                                         class="btn-sm btn-danger" onclick="deleteGameRate(${data})" ><i class="fa fa-trash cp"
+                                           aria-hidden="true"></i>&nbsp;Delete</button>
+                                            </div>`;
+                                            },
+                                        },
+                                    ],
+                                });
+                            });
+                        } else {
+                            $.notify({
+                                title: "",
+                                message: response.data?.msg,
+                                icon: 'fa fa-times'
+                            }, {
+                                type: "danger",
+                            });
+                        }
+                    }, (error) => {
+                        console.log('error', error);
+                        endLoader()
+                        $.notify({
+                            title: "",
+                            message: `Something went wrong! Please try again.`,
+                            icon: 'fa fa-times'
+                        }, {
+                            type: "danger"
+                        });
+                    })
+                } else {
+                    endLoader()
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger",
+                    });
+                }
+            }, (error) => {
+                console.log('error', error);
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
+        }
+        function addGameResult() {
+            startLoader()
+            let add_market_name = document.getElementById('add_market_name').value;
+            let add_game_result = document.getElementById('add_game_result').value;
+            if (add_market_name === "" || add_game_result === "") {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Please enter all the fields.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            }
+            $('#add_game_rate_modal').modal('hide');
+            axiosInstance.post('add_result', {
+                "market_id": add_market_name,
+                "results": add_game_result
+
+            }).then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-check'
+                    }, {
+                        type: "success",
+                    });
+                    getGameResultList();
+                } else {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger",
+                    });
+                }
+            }, (error) => {
+                console.log('error', error);
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
+        }
+        function setEditForm(g_id) {
+            let gameNow = gameResultList?.filter(m => m?.result_id === `${g_id}`)
+            if (gameNow?.length > 0) {
+                let marketListFind = marketList?.filter(m => m?.market_id === gameNow[0]?.market_id)
+                if (marketListFind?.length > 0) {
+                    document.getElementById('edit_market_name').value = marketListFind[0]?.market_fullname
+                }
+                document.getElementById('edit_game_result').value = gameNow[0]?.results
+                document.getElementById('edit_save_btn').setAttribute("onClick", `updateGameRate(${g_id})`);
+            }
+        }
+        function updateGameRate(g_id) {
+            startLoader()
+            let edit_game_result = document.getElementById('edit_game_result').value;
+            if (edit_game_result === "") {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Please enter game result.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            }
+            $('#edit_game_rate_modal').modal('hide');
+            axiosInstance.post('edit_result', {
+                "result_id": g_id,
+                "results": edit_game_result
+            }).then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-check'
+                    }, {
+                        type: "success",
+                    });
+                    getGameResultList();
+                } else {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger",
+                    });
+                }
+            }, (error) => {
+                console.log('error', error);
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
+        }
+        function deleteGameRate(g_id) {
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this rate!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel plx!",
+                closeOnConfirm: true,
+                closeOnCancel: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    startLoader()
+                    axiosInstance.post('delete_result', {
+                        "result_id": g_id
+                    }).then((response) => {
+                        endLoader()
+                        if (response.status === 200) {
+                            $.notify({
+                                title: "",
+                                message: response.data?.msg,
+                                icon: 'fa fa-check'
+                            }, {
+                                type: "success",
+                            });
+                            getGameResultList();
+                        } else {
+                            $.notify({
+                                title: "",
+                                message: response.data?.msg,
+                                icon: 'fa fa-times'
+                            }, {
+                                type: "danger",
+                            });
+                        }
+                    }, (error) => {
+                        console.log('error', error);
+                        endLoader()
+                        $.notify({
+                            title: "",
+                            message: `Something went wrong! Please try again.`,
+                            icon: 'fa fa-times'
+                        }, {
+                            type: "danger"
+                        });
+                    })
+                } else {
+                    swal("Cancelled", "Your game rate is safe.", "error");
+                }
+            });
+        }
     </script>
 </body>
 
