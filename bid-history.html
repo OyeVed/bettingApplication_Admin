@@ -186,16 +186,16 @@
                     <table class="table table-hover table-bordered" id="sampleTable">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
+                                <th>User Id</th>
+                                <th>Market Id</th>
+                                <th>Game Name</th>
+                                <th>Game Type</th>
+                                <th>Number</th>
+                                <th>Point</th>
                             </tr>
                         </thead>
                         <tbody>
-                           
+
                         </tbody>
                     </table>
                 </div>
@@ -212,15 +212,41 @@
     <!-- Data table plugin-->
     <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$('#sampleTable').DataTable();</script>
     <script type="text/javascript">
-         authenticate();
+        authenticate();
         window.onload = function () {
             startLoader()
             axiosInstance.get('bid_history').then((response) => {
                 endLoader()
                 if (response.status === 200) {
-
+                    let dataSet = response.data?.msg
+                    gameRateList = dataSet
+                    $(document).ready(function () {
+                        $('#sampleTable').DataTable().destroy();
+                        $('#sampleTable').DataTable({
+                            data: dataSet,
+                            columns: [
+                                {
+                                    data: 'user_id',
+                                },
+                                {
+                                    data: 'market_id',
+                                },
+                                {
+                                    data: 'game_name',
+                                },
+                                {
+                                    data: 'game_type',
+                                },
+                                {
+                                    data: 'number',
+                                },
+                                {
+                                    data: 'points',
+                                },
+                            ],
+                        });
+                    });
                 } else {
                     $.notify({
                         title: "",
