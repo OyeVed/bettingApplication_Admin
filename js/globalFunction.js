@@ -12,6 +12,11 @@ function authenticate() {
   if (isLoggedIn === "false" || isLoggedIn === null) {
     location.href = "index.html";
   }
+  let cookieData = getCookie("jwt");
+  if (!cookieData?.user_phonenumber) {
+    localStorage.setItem("isLoggedIn", "false");
+    location.href = "index.html";
+  }
 }
 const axiosInstance = axios.create({
   baseURL: `/bettingApplication_Admin/backend/`,
@@ -50,21 +55,37 @@ function getCookie(name) {
 function signOut() {
   startLoader();
   let cookieData = getCookie("jwt");
-  axiosInstance
-    .post("logout", {
-      phone_number: cookieData?.userName,
-    })
-    .then(
-      (response) => {
-        endLoader();
-        if (response.status === 200) {
-          localStorage.setItem("isLoggedIn", "false");
-          location.href = "index.html";
-        } else {
+  if (cookieData?.user_phonenumber) {
+    axiosInstance
+      .post("logout", {
+        phone_number: cookieData?.userName,
+      })
+      .then(
+        (response) => {
+          endLoader();
+          if (response.status === 200) {
+            localStorage.setItem("isLoggedIn", "false");
+            location.href = "index.html";
+          } else {
+            $.notify(
+              {
+                title: "",
+                message: response.data?.msg,
+                icon: "fa fa-times",
+              },
+              {
+                type: "danger",
+              }
+            );
+          }
+        },
+        (error) => {
+          endLoader();
+          console.log("error", error);
           $.notify(
             {
               title: "",
-              message: response.data?.msg,
+              message: `Something went wrong! Please try again.`,
               icon: "fa fa-times",
             },
             {
@@ -72,22 +93,11 @@ function signOut() {
             }
           );
         }
-      },
-      (error) => {
-        endLoader();
-        console.log("error", error);
-        $.notify(
-          {
-            title: "",
-            message: `Something went wrong! Please try again.`,
-            icon: "fa fa-times",
-          },
-          {
-            type: "danger",
-          }
-        );
-      }
-    );
+      );
+  } else {
+    localStorage.setItem("isLoggedIn", "false");
+    location.href = "index.html";
+  }
 }
 function convertTime(time) {
   return new Date("1970-01-01T" + time + "Z").toLocaleTimeString("en-US", {
