@@ -16,9 +16,9 @@ if(auth($token)){
     $user_id = $_POST['user_id'];
     //fetch details from market
     $sql = "DELETE FROM user_table
-    WHERE user_id = 1";
+    WHERE user_id = :user_id";
     $query = $con -> prepare($sql);
-    // $query->bindparam("user_id", $user_id, PDO::PARAM_STR);
+    $query->bindparam("user_id", $user_id, PDO::PARAM_STR);
 
     if($query->execute()){
         $status = 200;
