@@ -115,8 +115,7 @@
                         class="app-menu__icon fa fa-play-circle"></i><span class="app-menu__label">Markets</span><i
                         class="treeview-indicator fa fa-angle-right"></i></a>
                 <ul class="treeview-menu ">
-                    <li><a class="treeview-item" href="manage-markets.html"><i
-                                class="icon fa fa-circle-o"></i>Manage
+                    <li><a class="treeview-item" href="manage-markets.html"><i class="icon fa fa-circle-o"></i>Manage
                             Markets</a></li>
                     <li><a class="treeview-item active" href="track-livegame.html"><i
                                 class="icon fa fa-circle-o"></i>Track
@@ -186,7 +185,7 @@
             <div class="col-md-4 col-12">
                 <div class="tile" style="height: 150px;">
                     <h5>Total Live Game</h5>
-                    <h2>10</h2>
+                    <h2 id="total_live_game">00</h2>
                     <div class="progress mb-2">
                         <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25"
                             aria-valuemin="0" aria-valuemax="100"></div>
@@ -194,7 +193,7 @@
                 </div>
                 <div class="tile" style="height: 150px;">
                     <h5>Total Closed Game</h5>
-                    <h2>120</h2>
+                    <h2 id="total_closed_game">00</h2>
                     <div class="progress mb-2">
                         <div class="progress-bar bg-danger" role="progressbar" style="width: 55%" aria-valuenow="25"
                             aria-valuemin="0" aria-valuemax="100"></div>
@@ -204,36 +203,7 @@
             <div class="col-md-8 col-12">
                 <div class="tile" style="height: 330px;overflow: auto;">
                     <h5>Live Games</h5>
-                    <div class="row">
-                        <div
-                            class="cp live_game_card d-flex justify-content-center align-items-center text-center flex-column">
-                            <h6>MILAN DAY</h6>
-                            <p>₹ 10/- </p>
-                            <div class="live_game_circle"><i class="fa fa-circle text-danger" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                        <div
-                            class="cp live_game_card d-flex justify-content-center align-items-center text-center flex-column">
-                            <h6>MILAN DAY</h6>
-                            <p>₹ 10/- </p>
-                            <div class="live_game_circle"><i class="fa fa-circle text-danger" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                        <div
-                            class="cp live_game_card d-flex justify-content-center align-items-center text-center flex-column">
-                            <h6>MILAN DAY</h6>
-                            <p>₹ 10/- </p>
-                            <div class="live_game_circle"><i class="fa fa-circle text-danger" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                        <div
-                            class=" cp live_game_card d-flex justify-content-center align-items-center text-center flex-column">
-                            <h6>MILAN DAY</h6>
-                            <p>₹ 10/- </p>
-                            <div class="live_game_circle"><i class="fa fa-circle text-danger" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="row" id="live_game_container"></div>
                 </div>
             </div>
         </div>
@@ -249,12 +219,59 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script src="./js/globalFunction.js"></script>
+    <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
     <!-- Data table plugin-->
     <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$('#sampleTable').DataTable();</script>
+    <!-- <script type="text/javascript">$('#sampleTable').DataTable();</script> -->
     <script type="text/javascript">
-         authenticate();
+        authenticate();
+        window.onload = function () {
+            startLoader()
+            axiosInstance.get('fetch_livegames').then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    let dataSet = response.data
+                    document.getElementById('total_live_game').innerText = dataSet?.total_live_games
+                    document.getElementById('total_closed_game').innerText = dataSet?.total_closed_games
+                    let live_game_container = document.getElementById('live_game_container')
+                    live_game_container.innerHTML = ''
+                    for (let i = 0; i < dataSet?.msg.length; i++) {
+                        let element = dataSet?.msg[i];
+                        if (element?.market_status === 'open') {
+                            live_game_container.innerHTML = live_game_container.innerHTML +
+                                `<div
+                            class="cp live_game_card d-flex justify-content-center align-items-center text-center flex-column">
+                            <h6>${element?.market_fullname}</h6>
+                            <p>Open Time - ${convertTime(element?.market_opentime)}</p>
+                            <p>Close Time - ${convertTime(element?.market_closetime)}</p>
+                            <div class="live_game_circle"><i class="fa fa-circle text-success" aria-hidden="true"></i>
+                            </div>
+                        </div>`
+                        }
+                    }
+                } else {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger",
+                    });
+                }
+                console.log(response)
+            }, (error) => {
+                console.log('error', error);
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
+        }
     </script>
 </body>
 
