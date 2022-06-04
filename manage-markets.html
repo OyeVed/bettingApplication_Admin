@@ -171,8 +171,8 @@
                             Support</a></li>
                 </ul>
             </li>
-            <li><a class="app-menu__item" href="index.html"><i class="app-menu__icon fa fa-sign-out"></i><span
-                        class="app-menu__label">Logout</span></a></li>
+            <li><a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-sign-out"></i><span
+                        class="app-menu__label" onclick="signOut()">Logout</span></a></li>
         </ul>
     </aside>
     <main class="app-content">
@@ -299,7 +299,7 @@
     <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
-         authenticate();
+        authenticate();
         let marketList = []
         window.onload = function () {
             getMarketList()
@@ -346,13 +346,18 @@
                         });
                     });
                 } else {
-                    $.notify({
-                        title: "",
-                        message: response.data?.msg,
-                        icon: 'fa fa-times'
-                    }, {
-                        type: "danger",
-                    });
+                    if (response?.data?.is_logged_out) {
+                        localStorage.setItem("isLoggedIn", "false");
+                        location.href = "index.html";
+                    } else {
+                        $.notify({
+                            title: "",
+                            message: response.data?.msg,
+                            icon: 'fa fa-times'
+                        }, {
+                            type: "danger",
+                        });
+                    }
                 }
             }, (error) => {
                 console.log('error', error);
@@ -435,13 +440,18 @@
                     });
                     getMarketList();
                 } else {
-                    $.notify({
-                        title: "",
-                        message: response.data?.msg,
-                        icon: 'fa fa-times'
-                    }, {
-                        type: "danger",
-                    });
+                    if (response?.data?.is_logged_out) {
+                        localStorage.setItem("isLoggedIn", "false");
+                        location.href = "index.html";
+                    } else {
+                        $.notify({
+                            title: "",
+                            message: response.data?.msg,
+                            icon: 'fa fa-times'
+                        }, {
+                            type: "danger",
+                        });
+                    }
                 }
             }, (error) => {
                 console.log('error', error);
@@ -518,13 +528,18 @@
                     });
                     getMarketList();
                 } else {
-                    $.notify({
-                        title: "",
-                        message: response.data?.msg,
-                        icon: 'fa fa-times'
-                    }, {
-                        type: "danger",
-                    });
+                    if (response?.data?.is_logged_out) {
+                        localStorage.setItem("isLoggedIn", "false");
+                        location.href = "index.html";
+                    } else {
+                        $.notify({
+                            title: "",
+                            message: response.data?.msg,
+                            icon: 'fa fa-times'
+                        }, {
+                            type: "danger",
+                        });
+                    }
                 }
             }, (error) => {
                 console.log('error', error);
@@ -565,13 +580,18 @@
                             });
                             getMarketList();
                         } else {
-                            $.notify({
-                                title: "",
-                                message: response.data?.msg,
-                                icon: 'fa fa-times'
-                            }, {
-                                type: "danger",
-                            });
+                            if (response?.data?.is_logged_out) {
+                                localStorage.setItem("isLoggedIn", "false");
+                                location.href = "index.html";
+                            } else {
+                                $.notify({
+                                    title: "",
+                                    message: response.data?.msg,
+                                    icon: 'fa fa-times'
+                                }, {
+                                    type: "danger",
+                                });
+                            }
                         }
                     }, (error) => {
                         console.log('error', error);

@@ -12,6 +12,11 @@ function authenticate() {
   if (isLoggedIn === "false" || isLoggedIn === null) {
     location.href = "index.html";
   }
+  let cookieData = getCookie("jwt");
+  if (!cookieData?.admin_phonenumber) {
+    localStorage.setItem("isLoggedIn", "false");
+    location.href = "index.html";
+  }
 }
 // baseURL: `/bettingApplication_Admin/backend/`,
 const axiosInstance = axios.create({
@@ -51,13 +56,14 @@ function getCookie(name) {
 function signOut() {
   startLoader();
   let cookieData = getCookie("jwt");
-  if (cookieData?.user_phonenumber) {
+  if (cookieData?.admin_phonenumber) {
     axiosInstance
       .post("logout", {
-        phone_number: cookieData?.userName,
+        phone_number: cookieData?.admin_phonenumber,
       })
       .then(
         (response) => {
+          console.log(response);
           endLoader();
           if (response.status === 200) {
             localStorage.setItem("isLoggedIn", "false");
