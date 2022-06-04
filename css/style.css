@@ -253,9 +253,24 @@
   right: 6px;
   top: 6px;
 }
+#market_details_div .market_card_detail {
+  width: 200px;
+  background: var(--default-border-1);
+  text-align: center;
+  padding: 5px 3px 3px 0px;
+  border-radius: 6px;
+}
+#market_details_div .market_card_detail h5 {
+  font-size: 15px;
+  padding: 0 !important;
+}
+#market_details_div .market_card_detail p {
+  font-size: 10px;
+  padding: 0 !important;
+}
 /* /////////////////////////////////////////////////// */
 /*  ////////////////// affiliate //////////////////*/
 /* //////////////////////////////////////////////// */
-.reward_tile_input{
-  opacity: 0.30;
+.reward_tile_input {
+  opacity: 0.3;
 }

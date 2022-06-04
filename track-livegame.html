@@ -207,9 +207,15 @@
                 </div>
             </div>
         </div>
-        <div class="tile">
+        <div class="tile" style="min-height: 300px;">
             <div class="tile-title">
                 <h4>Details</h4>
+                <div id="market_details_div">
+                    <div class="market_card_detail">
+                        <h5>SP-500</h5>
+                        <p>₹10/-</p>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -279,7 +285,34 @@
             })
         }
         function fetchMarketDetails(m_id) {
-            console.log(m_id)
+            startLoader()
+            axiosInstance.post('fetch_market_details', {
+                "market_id": m_id
+            }).then((response) => {
+                endLoader()
+                if (response.status === 200) {
+
+                } else {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger",
+                    });
+                }
+                console.log(response)
+            }, (error) => {
+                console.log('error', error);
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
         }
     </script>
 </body>

@@ -12,15 +12,10 @@ function authenticate() {
   if (isLoggedIn === "false" || isLoggedIn === null) {
     location.href = "index.html";
   }
-  let cookieData = getCookie("jwt");
-  if (!cookieData?.user_phonenumber) {
-    localStorage.setItem("isLoggedIn", "false");
-    location.href = "index.html";
-  }
 }
 // baseURL: `/bettingApplication_Admin/backend/`,
 const axiosInstance = axios.create({
-  baseURL: `/backend/`,
+  baseURL: `/bettingApplication_Admin/backend/`,
   credentials: "include",
   withCredentials: true,
 });

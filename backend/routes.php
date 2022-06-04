@@ -35,7 +35,7 @@ $router->endpoint('delete_customers', './views/customers/delete_customers', ['PO
 
 //track_live games
 $router->endpoint('fetch_livegames', './views/track_livegames/fetch_livegames', ['GET'], []);
-$router->endpoint('fetch_market_details', './views/track_livegames/fetch_market_details', ['GET'], ['market_id']);
+$router->endpoint('fetch_market_details', './views/track_livegames/fetch_market_details', ['POST'],FALSE, ['market_id']);
 
 //dashboard 
 $router->endpoint('dashboard', './views/dashboard', ['GET'], FALSE, []);
