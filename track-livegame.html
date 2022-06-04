@@ -210,12 +210,7 @@
         <div class="tile" style="min-height: 300px;">
             <div class="tile-title">
                 <h4>Details</h4>
-                <div id="market_details_div">
-                    <div class="market_card_detail">
-                        <h5>SP-500</h5>
-                        <p>₹10/-</p>
-                    </div>
-                </div>
+                <div id="market_details_div"></div>
             </div>
         </div>
     </main>
@@ -296,7 +291,26 @@
             }).then((response) => {
                 endLoader()
                 if (response.status === 200) {
-
+                    let dataSet = response?.data?.msg
+                    if (dataSet?.length === 0) {
+                        $.notify({
+                            title: "",
+                            message: "No details found",
+                            icon: 'fa fa-check'
+                        }, {
+                            type: "success",
+                        });
+                    }
+                    let market_details_div = document.getElementById('market_details_div');
+                    market_details_div.innerHTML = ''
+                    for (let i = 0; i < dataSet.length; i++) {
+                        market_details_div.innerHTML = market_details_div.innerHTML +
+                            ` <div class="market_card_detail">
+                              <h5>${dataSet[i]?.game_name} - ${dataSet[i]?.number}</h5>
+                              <p>₹${dataSet[i]?.points}/-</p>
+                             </div>
+                            `
+                    }
                 } else {
                     if (response?.data?.is_logged_out) {
                         localStorage.setItem("isLoggedIn", "false");
