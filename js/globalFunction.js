@@ -12,7 +12,7 @@ function authenticate() {
   if (isLoggedIn === "false" || isLoggedIn === null) {
     location.href = "index.html";
   }
-  let cookieData = getCookie("jwt");
+  let cookieData = getCookie("admin_jwt");
   if (!cookieData?.admin_phonenumber) {
     localStorage.setItem("isLoggedIn", "false");
     location.href = "index.html";
@@ -55,7 +55,7 @@ function getCookie(name) {
 
 function signOut() {
   startLoader();
-  let cookieData = getCookie("jwt");
+  let cookieData = getCookie("admin_jwt");
   if (cookieData?.admin_phonenumber) {
     axiosInstance
       .post("logout", {
