@@ -29,7 +29,7 @@ if(auth($token)){
     // query to insert the submitted data
     $sql = "INSERT INTO image_upload (user_id, profile_image) VALUES (:user_id, :profile_image)";
     $query = $con -> prepare($sql);
-    $query->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+    $query->bindParam(':user_id', $payload->admin_user_id, PDO::PARAM_STR);
     $query->bindParam(':profile_image', $image, PDO::PARAM_STR);
     if($query->execute()){
         $status = 200;

@@ -3,17 +3,20 @@
 // import db connection
 require("dbcon.php");
 require('middleware.php');
+require_once('../vendor/autoload.php');
+use \Firebase\JWT\JWT;
+use \Firebase\JWT\Key;
 
 // retrieve request data
 $_POST = json_decode(file_get_contents("php://input"), true);
 
 // getting token from cookie
 $token = $_COOKIE["admin_jwt"];
-
 // checking is the user authorized 
 if(auth($token)){
-    //find the market to edit
-    $user_id = $_POST['user_id'];
+    //extracting payload from jwt
+    $secret_key = "bGS6lzFqvvSQ8ALbOxatm7/Vk7mLQyzqaS34Q4oR1ew=";
+    $payload = JWT::decode($token, new Key($secret_key, 'HS512'));
 
     //fetch details from query parameter
     $phone_number = $_POST['phone_number'];
@@ -21,16 +24,16 @@ if(auth($token)){
     $email = $_POST['email'];
 
     //fetch details from market
-    $sql = "UPDATE user_table SET 
-    user_phonenumber=:user_phonenumber,
-    user_email=:user_email, 
-    user_fullname=:user_fullname
-    WHERE user_id = :user_id ";
+    $sql = "UPDATE admin_user_table SET 
+        admin_phonenumber=:admin_phonenumber,
+        admin_email_id=:admin_email_id, 
+        admin_fullname=:admin_fullname
+    WHERE admin_user_id = :admin_user_id ";
     $query = $con -> prepare($sql);
-    $query->bindParam(':user_phonenumber', $phone_number, PDO::PARAM_STR);
-    $query->bindParam(':user_email', $email, PDO::PARAM_STR);
-    $query->bindParam(':user_fullname', $full_name, PDO::PARAM_STR);
-    $query->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+    $query->bindParam(':admin_phonenumber', $phone_number, PDO::PARAM_STR);
+    $query->bindParam(':admin_email_id', $email, PDO::PARAM_STR);
+    $query->bindParam(':admin_fullname', $full_name, PDO::PARAM_STR);
+    $query->bindParam(':admin_user_id', $payload->admin_user_id, PDO::PARAM_STR);
 
     if($query->execute()){
         $status = 200;

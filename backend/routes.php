@@ -34,8 +34,15 @@ $router->endpoint('delete_result', './views/markets/results/delete_result', ['PO
 
 // customers details related routes
 $router->endpoint('fetch_customers', './views/customers/fetch_customers', ['GET'], FALSE, []);
-$router->endpoint('edit_customers', './views/customers/edit_customers', ['POST'], FALSE, ['user_id', 'phone_number', 'full_name', 'password', 'email']);
+$router->endpoint('edit_customers', './views/customers/edit_customers', ['POST'], FALSE, ['user_id', 'phone_number', 'full_name', 'email']);
 $router->endpoint('delete_customers', './views/customers/delete_customers', ['POST'], FALSE, ['user_id']);
+
+
+// admin_user details related routes
+$router->endpoint('fetch_admin_user', './views/admin_user/fetch_admin_user', ['GET'], FALSE, []);
+$router->endpoint('edit_admin_user', './views/admin_user/edit_admin_user', ['POST'], FALSE, ['phone_number', 'full_name', 'email']);
+$router->endpoint('delete_admin_user', './views/admin_user/delete_admin_user', ['POST'], FALSE, ['admin_user_id']);
+
 
 //track_live games
 $router->endpoint('fetch_livegames', './views/track_livegames/fetch_livegames', ['GET'], []);
