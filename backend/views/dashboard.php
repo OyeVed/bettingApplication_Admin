@@ -5,16 +5,16 @@ require("dbcon.php");
 require('middleware.php');
 
 // getting token from cookie
-$token = $_COOKIE["jwt"];
+$token = $_COOKIE["admin_jwt"];
 
 // checking is the user authorized 
 if(auth($token)){
     //todays_winnings
-    $sql = "SELECT SUM(win_amount) as wa FROM win_history 
+    $sql = "SELECT SUM(win_amount) as todays_winnings FROM win_history 
     WHERE DATE(created_at) = CURDATE()";
     $query = $con -> prepare($sql);
     if($query->execute()){
-        $todays_winnings = $query->fetchAll(PDO::FETCH_ASSOC)[0]['wa'];
+        $todays_winnings = $query->fetchAll(PDO::FETCH_ASSOC)[0];
         $status = 200;
         $response = [
             "msg" => $todays_winnings

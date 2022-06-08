@@ -51,7 +51,7 @@ if($query->rowCount() === 0){
             'nbf'  => $issuedAt->getTimestamp(),                 // Not before
             'exp'  => $expire,                                   // Expire
             'admin_phonenumber' => $admin->admin_phonenumber,    //admin name
-            'admin_id' =>  $admin->admin_user_id                 // admin id           
+            'admin_user_id' =>  $admin->admin_user_id                 // admin id           
         ];
 
         $jwt =  JWT::encode(
@@ -60,7 +60,7 @@ if($query->rowCount() === 0){
             'HS512'
         );
         // sending jwt token to frontend with cookies
-        setcookie("jwt", $jwt, time()+ (86400 * 7), "/","", 0); //86400*7 expiry time to 7 days
+        setcookie("admin_jwt", $jwt, time()+ (86400 * 7), "/","", 0); //86400*7 expiry time to 7 days
 
         $status = 200;
         $response = [
