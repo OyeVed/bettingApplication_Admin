@@ -240,6 +240,7 @@
         $(document).ready(function () {
             $('#logo_upload_btn').click(function () {
                 // alert("Hello");
+                console.log(document.getElementById('logo_input_field').value)
                 let formData = new FormData();
                 formData.append("choosefile", $("#logo_input_field").val());
                 axiosInstance.post('image_upload',
