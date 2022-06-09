@@ -188,12 +188,14 @@
             <h5>Application Logo</h5>
             <div class="row" style="height:200px;">
                 <div class="col-6 d-flex justify-content-center align-items-center flex-column">
-                    <input type="file" accept="image/*" onchange="loadFile(event,'applicationlogo_id')">
+                    <input type="file" accept="image/*" id="logo_input_field"
+                        onchange="loadFile(event,'applicationlogo_id')">
                 </div>
                 <div class="col-6 d-flex justify-content-center align-items-center">
                     <img id="applicationlogo_id" style="height: 180px;" src="./assets/images/emptyimage.png" />
                 </div>
             </div>
+            <button id="logo_upload_btn">Upload</button>
         </div>
         <div class="tile">
             <h5>Application Icon</h5>
@@ -216,7 +218,7 @@
     <!-- Data table plugin-->
     <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$('#sampleTable').DataTable();</script>
+    <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
     <script type="text/javascript">
         authenticate();
         // handle affiliate button click
@@ -235,6 +237,40 @@
                 URL.revokeObjectURL(output.src) // free memory
             }
         };
+        $(document).ready(function () {
+            $('#logo_upload_btn').click(function () {
+                // alert("Hello");
+                let formData = new FormData();
+                formData.append("choosefile", $("#logo_input_field").val());
+                axiosInstance.post('image_upload',
+                    formData
+                ).then((response) => {
+                    endLoader()
+                    if (response.status === 200) {
+
+                    } else {
+                        $.notify({
+                            title: "",
+                            message: response.data?.msg,
+                            icon: 'fa fa-times'
+                        }, {
+                            type: "danger",
+                        });
+                    }
+                    console.log(response)
+                }, (error) => {
+                    endLoader()
+                    console.log('error', error);
+                    $.notify({
+                        title: "",
+                        message: `Something went wrong! Please try again.`,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger"
+                    });
+                })
+            });
+        });
     </script>
 </body>
 
