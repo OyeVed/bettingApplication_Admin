@@ -185,7 +185,7 @@
                 <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                     <div class="info">
                         <h4>Total Users</h4>
-                        <p><b>5</b></p>
+                        <p><b id="total_users">0</b></p>
                     </div>
                 </div>
             </div>
@@ -193,7 +193,7 @@
                 <div class="widget-small info coloured-icon"><i class="icon fa fa-inr fa-3x"></i>
                     <div class="info">
                         <h4>Total Deposits</h4>
-                        <p><b>25</b></p>
+                        <p><b id="total_deposits">0</b></p>
                     </div>
                 </div>
             </div>
@@ -201,7 +201,7 @@
                 <div class="widget-small warning coloured-icon"><i class="icon fa fa-inr fa-3x"></i>
                     <div class="info">
                         <h4>Total Withdrawals</h4>
-                        <p><b>10</b></p>
+                        <p><b id="total_withdrawls" >0</b></p>
                     </div>
                 </div>
             </div>
@@ -209,7 +209,7 @@
                 <div class="widget-small danger coloured-icon"><i class="icon fa fa-inr fa-3x"></i>
                     <div class="info">
                         <h4>Total Bid Amount</h4>
-                        <p><b>500</b></p>
+                        <p><b id="total_bid">0</b></p>
                     </div>
                 </div>
             </div>
@@ -217,7 +217,7 @@
                 <div class="widget-small primary coloured-icon"><i class="icon fa fa-inr fa-3x"></i>
                     <div class="info">
                         <h4>Total Profit</h4>
-                        <p><b>500</b></p>
+                        <p><b id="total_profit">0</b></p>
                     </div>
                 </div>
             </div>
@@ -225,7 +225,7 @@
                 <div class="widget-small info coloured-icon"><i class="icon fa fa-share-alt fa-3x"></i>
                     <div class="info">
                         <h4>Total Referrals</h4>
-                        <p><b>500</b></p>
+                        <p><b id="total_referrals" >0</b></p>
                     </div>
                 </div>
             </div>
@@ -236,19 +236,19 @@
                         class="icon fa fa-money fa-3x"></i>
                     <div class="info">
                         <h4>Today's biddings</h4>
-                        <p><b>500</b></p>
+                        <p><b id="todays_biddings" >0</b></p>
                     </div>
                 </div>
                 <div style="min-height: 160px;" class="widget-small danger coloured-icon"><i
                         class="icon fa fa-inr fa-3x"></i>
                     <div class="info">
                         <h4>Today's winnings</h4>
-                        <p><b>500</b></p>
+                        <p><b id="todays_winnings" >0</b></p>
                     </div>
                 </div>
             </div>
             <div class="col-8">
-                <div class="tile" style="max-height: 350px;overflow: auto;">
+                <div class="tile" style="max-height: 350px;min-height:349px;overflow: auto;">
                     <h3 class="tile-title">Markets Table</h3>
                     <table class="table">
                         <thead>
@@ -281,7 +281,8 @@
             axiosInstance.get('dashboard').then((response) => {
                 endLoader()
                 if (response.status === 200) {
-                    let dataSet = response.data?.msg
+                    let dataSet = response.data?.msg?.market_data
+                    let otherData = response?.data?.msg
                     let market_details_table = document.getElementById('market_details_table')
                     market_details_table.innerHTML = ''
                     for (let i = 0; i < dataSet.length; i++) {
@@ -293,6 +294,26 @@
                                 <td>${convertTime(dataSet[0]?.market_opentime)}</td>
                                 <td>${convertTime(dataSet[0]?.market_closetime)}</td>
                             </tr>`
+                    }
+                    if(otherData?.todays_biddings)
+                    {
+                        $('#todays_biddings').html(otherData?.todays_biddings)
+                    }
+                    if(otherData?.todays_winnings)
+                    {
+                        $('#todays_winnings').html(otherData?.todays_winnings)
+                    }
+                    if(otherData?.total_bid_amount)
+                    {
+                        $('#total_bid').html(otherData?.total_bid_amount)
+                    }
+                    if(otherData?.total_deposits)
+                    {
+                        $('#total_deposits').html(otherData?.total_deposits)
+                    }
+                    if(otherData?.total_user)
+                    {
+                        $('#total_users').html(otherData?.total_user)
                     }
                 } else {
                     if (response?.data?.is_logged_out) {
