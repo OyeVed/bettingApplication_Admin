@@ -220,6 +220,7 @@
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
     <script type="text/javascript">
+        let logoFileData = null;
         authenticate();
         // handle affiliate button click
         function affiliate_button_clicked(val) {
@@ -233,22 +234,28 @@
         var loadFile = function (event, preview_id) {
             var output = document.getElementById(preview_id);
             output.src = URL.createObjectURL(event.target.files[0]);
+            logoFileData = event.target?.files[0]
+            console.log(logoFileData)
             output.onload = function () {
                 URL.revokeObjectURL(output.src) // free memory
             }
         };
         $(document).ready(function () {
             $('#logo_upload_btn').click(function () {
-                // alert("Hello");
-                console.log(document.getElementById('logo_input_field').value)
                 let formData = new FormData();
-                formData.append("choosefile", $("#logo_input_field").val());
+                formData.append("choosefile", logoFileData);
                 axiosInstance.post('image_upload',
                     formData
                 ).then((response) => {
                     endLoader()
                     if (response.status === 200) {
-
+                        $.notify({
+                            title: "",
+                            message: response.data?.msg,
+                            icon: 'fa fa-check'
+                        }, {
+                            type: "success",
+                        });
                     } else {
                         $.notify({
                             title: "",
