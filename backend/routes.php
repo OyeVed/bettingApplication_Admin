@@ -2,12 +2,13 @@
 
 // assign endpoints to their respective file location and allowed methods
 
-// login, signup, logout, profile_save, image_upload and reset_password routes
+// login, signup, logout, profile_save,profile_fetch image_upload and reset_password routes
 $router->endpoint('login', './views/login', ['POST'], FALSE, ['phone_number', 'password']);
 $router->endpoint('signup', './views/signup', ['POST'], FALSE, ['phone_number', 'password', 'email', 'full_name']);
 $router->endpoint('logout', './views/logout', ['POST'], FALSE, ['phone_number']);
 $router->endpoint('reset_password', './views/reset_password', ['POST'], FALSE, ['old_password', 'new_password', 'phone_number']);
 $router->endpoint('profile_save', './views/profile_save', ['GET'], FALSE, []);
+$router->endpoint('profile_fetch', './views/profile_fetch', ['GET'], FALSE, []);
 $router->endpoint('image_upload', './views/image_upload', ['POST'], FALSE, []);
 
 // markets/manage_markets all routes
@@ -47,6 +48,10 @@ $router->endpoint('delete_admin_user', './views/admin_user/delete_admin_user', [
 //track_live games
 $router->endpoint('fetch_livegames', './views/track_livegames/fetch_livegames', ['GET'], []);
 $router->endpoint('fetch_market_details', './views/track_livegames/fetch_market_details', ['POST'],FALSE, ['market_id']);
+
+//payments/deposit & withdraw routes
+$router->endpoint('deposit', './views/payments/deposit', ['POST'],FALSE, ['user_id', 'deposit_amount']); 
+$router->endpoint('withdraw', './views/payments/withdraw', ['POST'],FALSE, ['user_id', 'withdrawal_amount']); 
 
 //dashboard 
 $router->endpoint('dashboard', './views/dashboard', ['GET'], FALSE, []);

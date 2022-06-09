@@ -41,8 +41,8 @@ if(auth($token)){
     withdrawal_method=:withdrawal_method,
     upi_id=:upi_id,
     bank_name=:bank_name,
-    account_number:=account_number,
-    ifsc_code:=ifsc_code
+    account_number=:account_number,
+    ifsc_code=:ifsc_code
     WHERE user_id = :user_id ";
     $query = $con -> prepare($sql);
     $query->bindParam(':user_phonenumber', $phone_number, PDO::PARAM_STR);
