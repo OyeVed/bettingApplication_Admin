@@ -9,6 +9,7 @@ $database_tables = array(
         `admin_email_id` varchar(255) NOT NULL,
         `admin_phonenumber` VARCHAR(255) NOT NULL,
         `admin_fullname` VARCHAR(255) NOT NULL,
+        `profile_image` BLOB,
         `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
         `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP
     )",
@@ -33,12 +34,6 @@ $database_tables = array(
         `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (market_id) REFERENCES market_table(market_id)
     )",
-    "
-    CREATE TABLE IF NOT EXISTS `image_upload` (
-        `user_id` INT(255),
-        `profile_image` BLOB,
-        FOREIGN KEY (user_id) REFERENCES user_table(user_id)
-    )"
  
 );
 

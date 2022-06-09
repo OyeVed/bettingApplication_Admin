@@ -15,32 +15,51 @@ $token = $_COOKIE["admin_jwt"];
 
 // checking is the user authorized 
 if(auth($token)){
+
     //extracting payload from jwt
     $secret_key = "bGS6lzFqvvSQ8ALbOxatm7/Vk7mLQyzqaS34Q4oR1ew=";
     $payload = JWT::decode($token, new Key($secret_key, 'HS512'));
 
-    //extracting data from uploaded file
-    $filename = $_FILES["choosefile"]["name"];
-    $tempname = $_FILES["choosefile"]["tmp_name"];  
-    $folder = "images/".$filename;
-    $image = base64_encode(file_get_contents($tempname));
-
-
-    // query to insert the submitted data
-    $sql = "INSERT INTO image_upload (user_id, profile_image) VALUES (:user_id, :profile_image)";
-    $query = $con -> prepare($sql);
-    $query->bindParam(':user_id', $payload->admin_user_id, PDO::PARAM_STR);
-    $query->bindParam(':profile_image', $image, PDO::PARAM_STR);
-    if($query->execute()){
-        $status = 200;
-        $response = [
-            "msg" => "Image Uploaded Succesfully"
-        ];
+    
+    //Checking files specifcation
+    //checking extension of file
+    $temp = explode('.', $_FILES["choosefile"]["name"]);
+    $extn = strtolower(end($temp));
+    if(($extn == "jpg") || ($extn == "png") ) {
+        // Filetype is correct. Check size
+        if($_FILES["choosefile"]["size"] < 2000000) {
+            //extracting data from uploaded file
+            $filename = $_FILES["choosefile"]["name"];
+            $tempname = $_FILES["choosefile"]["tmp_name"];
+            $image = base64_encode(file_get_contents($tempname));
+        
+        
+            // query to insert the submitted data
+            $sql = "UPDATE admin_user_table SET profile_image = :profile_image WHERE admin_user_id = :admin_user_id";
+            $query = $con -> prepare($sql);
+            $query->bindParam(':admin_user_id', $payload->admin_user_id, PDO::PARAM_STR);
+            $query->bindParam(':profile_image', $image, PDO::PARAM_LOB);
+            if($query->execute()){
+                $status = 200;
+                $response = [
+                    "msg" => "Image Uploaded Succesfully"
+                ];
+            }else{
+                $status = 203;
+                $response = [
+                    "msg" => "Image can't be saved to database"
+                ];
+            }
+        }else{
+            $status  = 203;
+            $response = [
+                "msg" => "Reduce file size to 2 MB."
+            ];
+        }
     }else{
         $status = 203;
         $response = [
-            "msg" => "Data can't be saved to database"
+            "msg" => "File is not in specified format."
         ];
     }
 }
-
