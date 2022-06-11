@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Arena Admin</title>
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body class="app sidebar-mini">
+    <!-- NOTE: START: -->
+    <!-- loader -->
+    <div class="overlay"></div>
+    <div class="spanner">
+        <div class="loader"></div>
+        <!-- <p>Uploading music file, please be patient.</p> -->
+    </div>
+    <!-- END: -->
+    <!-- Navbar-->
+    <header class="app-header"><a class="app-header__logo" href="home.html">Arena Admin</a>
+        <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
+            aria-label="Hide Sidebar"></a>
+        <!-- Navbar Right Menu-->
+        <ul class="app-nav">
+            <!--Notification Menu-->
+            <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown"
+                    aria-label="Show notifications"><i class="fa fa-bell-o fa-lg"></i></a>
+                <ul class="app-notification dropdown-menu dropdown-menu-right">
+                    <li class="app-notification__title">You have 4 new notifications.</li>
+                    <div class="app-notification__content">
+                        <li><a class="app-notification__item" href="javascript:;"><span
+                                    class="app-notification__icon"><span class="fa-stack fa-lg"><i
+                                            class="fa fa-circle fa-stack-2x text-primary"></i><i
+                                            class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
+                                <div>
+                                    <p class="app-notification__message">Lisa sent you a mail</p>
+                                    <p class="app-notification__meta">2 min ago</p>
+                                </div>
+                            </a></li>
+                        <li><a class="app-notification__item" href="javascript:;"><span
+                                    class="app-notification__icon"><span class="fa-stack fa-lg"><i
+                                            class="fa fa-circle fa-stack-2x text-danger"></i><i
+                                            class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
+                                <div>
+                                    <p class="app-notification__message">Mail server not working</p>
+                                    <p class="app-notification__meta">5 min ago</p>
+                                </div>
+                            </a></li>
+                        <li><a class="app-notification__item" href="javascript:;"><span
+                                    class="app-notification__icon"><span class="fa-stack fa-lg"><i
+                                            class="fa fa-circle fa-stack-2x text-success"></i><i
+                                            class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
+                                <div>
+                                    <p class="app-notification__message">Transaction complete</p>
+                                    <p class="app-notification__meta">2 days ago</p>
+                                </div>
+                            </a></li>
+                        <div class="app-notification__content">
+                            <li><a class="app-notification__item" href="javascript:;"><span
+                                        class="app-notification__icon"><span class="fa-stack fa-lg"><i
+                                                class="fa fa-circle fa-stack-2x text-primary"></i><i
+                                                class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
+                                    <div>
+                                        <p class="app-notification__message">Lisa sent you a mail</p>
+                                        <p class="app-notification__meta">2 min ago</p>
+                                    </div>
+                                </a></li>
+                            <li><a class="app-notification__item" href="javascript:;"><span
+                                        class="app-notification__icon"><span class="fa-stack fa-lg"><i
+                                                class="fa fa-circle fa-stack-2x text-danger"></i><i
+                                                class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
+                                    <div>
+                                        <p class="app-notification__message">Mail server not working</p>
+                                        <p class="app-notification__meta">5 min ago</p>
+                                    </div>
+                                </a></li>
+                            <li><a class="app-notification__item" href="javascript:;"><span
+                                        class="app-notification__icon"><span class="fa-stack fa-lg"><i
+                                                class="fa fa-circle fa-stack-2x text-success"></i><i
+                                                class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
+                                    <div>
+                                        <p class="app-notification__message">Transaction complete</p>
+                                        <p class="app-notification__meta">2 days ago</p>
+                                    </div>
+                                </a></li>
+                        </div>
+                    </div>
+                    <li class="app-notification__footer"><a href="#">See all notifications.</a></li>
+                </ul>
+            </li>
+            <!-- User Menu-->
+            <li><a class="app-nav__item" href="profile.html"><i class="fa fa-user fa-lg"></i></a>
+            </li>
+        </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <aside class="app-sidebar">
+        <ul class="app-menu">
+            <li><a class="app-menu__item" href="dashboard.html"><i class="app-menu__icon fa fa-home"></i><span
+                        class="app-menu__label">Dashboard</span></a>
+            </li>
+            <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
+                        class="app-menu__icon fa fa-play-circle"></i><span class="app-menu__label">Markets</span><i
+                        class="treeview-indicator fa fa-angle-right"></i></a>
+                <ul class="treeview-menu">
+                    <li><a class="treeview-item" href="manage-markets.html"><i class="icon fa fa-circle-o"></i>Manage
+                            Markets</a></li>
+                    <li><a class="treeview-item" href="track-livegame.html"><i class="icon fa fa-circle-o"></i>Track
+                            Live Game</a>
+                    </li>
+                    <li><a class="treeview-item" href="game-rates.html"><i class="icon fa fa-circle-o"></i>Game
+                            Rates</a>
+                    </li>
+                    <li><a class="treeview-item" href="bid-history.html"><i class="icon fa fa-circle-o"></i>Bid
+                            History</a>
+                    </li>
+                    <li><a class="treeview-item" href="win-history.html"><i class="icon fa fa-circle-o"></i>Win
+                            History</a>
+                    </li>
+                    <li><a class="treeview-item" href="market-result.html"><i
+                                class="icon fa fa-circle-o"></i>Results</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
+                        class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Payment</span><i
+                        class="treeview-indicator fa fa-angle-right"></i></a>
+                <ul class="treeview-menu">
+                    <li><a class="treeview-item" href="deposits.html"><i class="icon fa fa-circle-o"></i>Deposits</a>
+                    </li>
+                    <li><a class="treeview-item" href="withdrawal.html"><i class="icon fa fa-circle-o"></i>
+                            Withdrawals</a></li>
+                </ul>
+            </li>
+            <li><a class="app-menu__item" href="customer.html"><i class="app-menu__icon fa fa-user"></i><span
+                        class="app-menu__label">Customer</span></a></li>
+            <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
+                        class="app-menu__icon fa fa-user-plus"></i><span class="app-menu__label">Admin Users</span><i
+                        class="treeview-indicator fa fa-angle-right"></i></a>
+                <ul class="treeview-menu">
+                    <li><a class="treeview-item" href="users.html"><i class="icon fa fa-circle-o"></i>User
+                            Table</a></li>
+                    <li><a class="treeview-item" href="roles.html"><i class="icon fa fa-circle-o"></i>
+                            Role Table</a></li>
+                </ul>
+            </li>
+            <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
+                        class="app-menu__icon fa fa-cog"></i><span class="app-menu__label">Settings</span><i
+                        class="treeview-indicator fa fa-angle-right"></i></a>
+                <ul class="treeview-menu">
+                    <li><a class="treeview-item" href="integrations.html"><i
+                                class="icon fa fa-circle-o"></i>Integrations</a></li>
+                    <li><a class="treeview-item" href="affiliate.html"><i class="icon fa fa-circle-o"></i>
+                            Affiliate Settings</a></li>
+                    <li><a class="treeview-item" href="appearance.html"><i class="icon fa fa-circle-o"></i>
+                            Appereance</a></li>
+                    <li><a class="treeview-item" href="support.html"><i class="icon fa fa-circle-o"></i>
+                            Support</a></li>
+                </ul>
+            </li>
+            <li><a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-sign-out"></i><span
+                        class="app-menu__label" onclick="signOut()">Logout</span></a></li>
+        </ul>
+    </aside>
+    <main class="app-content">
+        <div class="profile_Pic">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAM1BMVEXk5ueutLfn6eqrsbTp6+zg4uOwtrnJzc/j5earsbW0uby4vcDQ09XGyszU19jd3+G/xMamCvwDAAAFLklEQVR4nO2d2bLbIAxAbYE3sDH//7WFbPfexG4MiCAcnWmnrzkjIRaD2jQMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMw5wQkHJczewxZh2lhNK/CBOQo1n0JIT74/H/qMV0Z7GU3aCcVPuEE1XDCtVLAhgtpme7H0s1N1U7QjO0L8F7llzGeh1hEG/8Lo7TUmmuSrOfns9xnGXpXxsONPpA/B6OqqstjC6Ax/0ujkNdYQQbKNi2k64qiiEZ+ohi35X+2YcZw/WujmslYewiAliVYrxgJYrdwUmwXsU+RdApUi83oNIE27YvrfB/ZPg8+BJETXnqh9CVzBbTQHgojgiCvtqU9thFJg/CKz3VIMKMEkIXxIWqIpIg2SkjYj+xC816mrJae2aiWGykxRNsW0UwiJghJDljYI5CD8GRiCtIsJxizYUPQ2pzItZy5pcisTRdk/a9m4amtNNfBuQkdVhSaYqfpNTSFGfb9GRIakrE2Pm+GFLaCQPqiu0OpWP+HMPQQcgQMiQprWXNmsVwIjQjYi/ZrhAqNTCgr2gu0Jnz85RSSjso0HkMFZ0YZjKkc26a/jlmh9JiDyDxi9oeorTYAzZkwwoMz19pzj9bnH/GP/+qbchjSGflneWYhtTuKdMOmNKZcJ5TjInQKcYXnESd/jQxy0ENpULTNGOGgxpap/oyw9pbUAqhfx2Dbkhovvfgz4iUzoM9+GlK6/Mh4q29hyC1mwro30hpVVLPF9wYQr71RazOeM5/cw81iBRD+A03aM9/C/obbrKjbYSpCmIVG3qT/Q8oeUo3Rz0IL7vI1tEbCB9pSiu8I/aV8x3Kg/BGWrWp4ZVs0nZfmAoEG4h/61yHYIJiFSl6Q0Vk6tTW1N8kYp8hdOkfHYYMXd2Qft+8CYwqYDSKvqIh+MCF8Wgca2u/cwdgeW3TtuVn6+1oBs3yLo5C2JpK6CvQzGpfUkz9UG/87gCsi5o2LIXolxN0FbwAsjOLEr+YJmXn7iR6N0BCt5p5cMxm7eAsfS+/CACQf4CTpKjzgkvr2cVarVTf96372yut7XLJ1sa7lv6VcfgYrWaxqr3Wlo1S6pvStr22sxOtTNPLzdY3nj20bPP+ejFdJYkLsjGLdtPBEbe/mr2bQKiXWJDroA+vtzc0p9aahuwqHMDYrQEXHEw9jwQl3drMpts9JBU1SdktPe5FBRdJQ6bwXBpa57ib2A8kukQDzMjh++Uo7Fo6Wd02Pkf4fknqoo4HtvAIjsqUcjx6DIPgWCaOML9rKI/oqD9/lgNrn+eF+p7j8tnzHBiR7+kdUGw/+V1Kzkc75mMy6U+FMaxjPibiM1U1uGM+puInHpmALZCgP4pt7i840MV8+0R1zPsRB6UTcqpizncYwZ89syDydfyWCwXB1l8/zRNGWbTG/GHKUm9AkxHMc/EGSk3z2+ArEhPEV5TUBLEvUGFcjEUH80J/jveTGOAJEljJbILWGQT3zRYiwuKsUXN1EEJAzBhRJFll7mBUG7KD8EqPkKekBREaL8hMDZLQSG6AQjtHPYmvTQnX0TtpC1SYCe2YdkkyLP3jj5BSbKiuR585eQhTgoje6yIb0Yb0C+mV6EYvebqw5SDy2WmubogZiF2AVxPC2FpDf8H2Q9QWo6IkjUxTWVEI3WY/wrCeSuqJ+eRWzXR/JXwgVjUMozbCOfoEZiSiKVGepqv5CJ8RyR4D7xBeamqa7z3BJ/z17JxuBPdv93d/a2Ki878MMAzDMAzDMAzDMAzDMF/KP09VUmxBAiI3AAAAAElFTkSuQmCC"
+                class="profile_img" alt="" id="profile_img_id" srcset="">
+            <label for="logo_input_field">Change Profile</label>
+            <input type="file" accept="image/*" id="logo_input_field" onchange="loadFile(event,'profile_img_id')">
+        </div>
+        <div class="formdata">
+            <form action="">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <input type="text" name="name" id="name_id" placeholder="Name">
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <input type="number" name="phone_number" id="phone_number_id" placeholder="Phone Number">
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <input type="email" name="email" id="email_id" placeholder="Email">
+                    </div>
+                </div>
+                <div class="btnWrapper">
+                    <button type="button" onclick="saveProfile()">Save</button>
+                </div>
+            </form>
+        </div>
+        <!-- <div class="accordion-item">
+            <header class="item-header">
+                <h2 class="item-question">
+                    Reset Password
+                </h2>
+                <div class="item-icon">
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </div>
+            </header>
+            <div class="item-content">
+                <div class="formdata">
+                    <label for="cpw">Current Password</label>
+                    <input type="password" name="" id="c_password_id" placeholder="">
+
+                    <label for="npw">New Password</label>
+                    <input type="password" name="" id="n_password_id" placeholder="">
+
+                    <label for="rpw">Re-enter Password</label>
+                    <input type="password" name="" id="re_password_id" placeholder="">
+                    <div class="btnWrapper">
+                        <button onclick="resetPassword()">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </main>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="./js/globalFunction.js"></script>
+    <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
+    <script type="text/javascript">
+        authenticate()
+        window.onload = function () {
+            fetchProfle()
+        }
+        function fetchProfle() {
+            startLoader()
+            axiosInstance.get('profile_fetch').then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    let dataSet = response?.data?.admin
+                    document.getElementById('name_id').value = dataSet?.full_name
+                    document.getElementById('phone_number_id').value = dataSet?.phone_number
+                    document.getElementById('email_id').value = dataSet?.email
+                } else {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger",
+                    });
+                }
+                console.log(response)
+            }, (error) => {
+                console.log('error', error);
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
+
+        }
+        function saveProfile() {
+            startLoader()
+            let name = document.getElementById('name_id').value;
+            let phone_number = document.getElementById('phone_number_id').value
+            let email = document.getElementById('email_id').value
+            if (phone_number?.length < 10) {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Invalid phone number.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            } else if (!validateEmail(email)) {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Invalid email format.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            }
+            axiosInstance.post('profile_save', {
+                "phone_number": phone_number,
+                "email": email,
+                "full_name": name
+            }).then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-check'
+                    }, {
+                        type: "success",
+                    });
+                } else {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger",
+                    });
+                }
+                console.log(response)
+            }, (error) => {
+                console.log('error', error);
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
+        }
+        function resetPassword() {
+            startLoader()
+            let c_password = document.getElementById('c_password_id').value;
+            let n_password = document.getElementById('n_password_id').value
+            let re_password = document.getElementById('re_password_id').value
+            if (n_password !== re_password || n_password === "") {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `New Password didn't match.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            }
+            axiosInstance.post('reset_password', {
+                "old_password": c_password,
+                "new_password": n_password,
+                "confirm_password": re_password
+            }).then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    $.notify({
+                        title: "",
+                        message: response?.data?.msg,
+                        icon: 'fa fa-check'
+                    }, {
+                        type: "success",
+                    });
+                } else {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-times'
+                    }, {
+                        type: "danger",
+                    });
+                }
+                console.log(response)
+            }, (error) => {
+                console.log('error', error);
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
+        }
+    </script>
+    <!-- control tab click -->
+    <script>
+        function updateTab(type) {
+            let ongoing_tab = document.getElementById('ongoing_tab')
+            let upcoming_tab = document.getElementById('upcoming_tab')
+            let ongoing_tab_content = document.getElementById('ongoing_tab_content');
+            let upcoming_tab_content = document.getElementById('upcoming_tab_content')
+            if (type == 'ongoing') {
+                ongoing_tab_content.className = 'd-flex justify-content-center flex-column'
+                upcoming_tab_content.className = 'd-none'
+                ongoing_tab.className = 'active_tab_dashboard'
+                upcoming_tab.className = ''
+            } else {
+                ongoing_tab_content.className = 'd-none'
+                upcoming_tab_content.className = 'd-flex justify-content-center flex-column'
+                ongoing_tab.className = ''
+                upcoming_tab.className = 'active_tab_dashboard'
+            }
+        }
+    </script>
+    <!-- accordion  -->
+    <script>
+        const accordionBtns = document.querySelectorAll(".item-header");
+
+        accordionBtns.forEach((accordion) => {
+            accordion.onclick = function () {
+                this.classList.toggle("active");
+
+                let content = this.nextElementSibling;
+                console.log(content);
+
+                if (content.style.maxHeight) {
+                    //this is if the accordion is open
+                    content.style.maxHeight = null;
+                } else {
+                    //if the accordion is currently closed
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    console.log(content.style.maxHeight);
+                }
+            };
+        });
+        var loadFile = function (event, preview_id) {
+            var output = document.getElementById(preview_id);
+            output.src = URL.createObjectURL(event.target.files[0]);
+            logoFileData = event.target?.files[0]
+            console.log(logoFileData)
+            output.onload = function () {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        };
+    </script>
+</body>
+
+</html>

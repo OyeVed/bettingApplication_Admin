@@ -256,14 +256,14 @@
 }
 /*// KEYFRAMES //*/
 
-@keyframes jump{
-  0%{
+@keyframes jump {
+  0% {
     transform: scale(1);
   }
-  50%{
+  50% {
     transform: scale(0.7);
   }
-  100%{
+  100% {
     transform: scale(1);
   }
 }
@@ -298,4 +298,121 @@
 /* //////////////////////////////////////////////// */
 .reward_tile_input {
   opacity: 0.3;
+}
+/* /////////////////////////////////////////////////// */
+/*  ////////////////// profile //////////////////*/
+/* //////////////////////////////////////////////// */
+.profile_Pic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  flex-direction: column;
+}
+.profile_Pic .profile_img {
+  width: 131px;
+  height: 131px;
+  border-radius: 50%;
+  z-index: 1;
+  border: 2px solid white;
+  margin-top: 30px;
+}
+.profile_Pic #logo_input_field {
+  display: none;
+}
+.profile_Pic label{
+  margin-top: 10px;
+  color: var(--default-border-1);
+}
+.formdata {
+  background: #28b9d94f;
+  width: 100%;
+  margin: 20px auto;
+  padding: 25px 25px 10px;
+  border-radius: 10px;
+}
+
+.name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#fname,
+#lname {
+  width: 47%;
+}
+
+.formdata input {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 7px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+}
+
+.formdata small {
+  display: inline-block;
+  margin-bottom: 3px;
+}
+
+.btnWrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btnWrapper button {
+  padding: 10px 80px;
+  background: skyblue;
+  border: none;
+  outline: none;
+  margin: 10px 0;
+  border-radius: 10px;
+}
+
+.accordion-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+  border-radius: 5px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.09);
+  cursor: pointer;
+  background: #28b9d94f;
+  margin-bottom: 0.5em;
+  padding-top: 15px;
+}
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 0.2em;
+}
+
+.item-icon {
+  flex: 0 0 25px;
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem;
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
+}
+.item-icon i {
+  transition: all 0.25s cubic-bezier(0.5, 0, 0.1, 1);
+}
+.item-question {
+  font-size: 1.3em;
+  line-height: 28px;
+  font-weight: bold;
+}
+
+.active .item-icon i {
+  transform: rotate(180deg);
+}
+
+.item-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 300ms ease;
 }
