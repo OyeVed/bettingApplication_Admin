@@ -196,7 +196,7 @@
                                 <th>Bank Name</th>
                                 <th>IFSC Code</th>
                                 <th>Account Number</th>
-                                <th style="width: 135px;">Action</th>
+                                <th style="min-width: 230px;">Action</th>
                             </tr>
                         </thead>
                         <tbody> </tbody>
@@ -249,6 +249,48 @@
                         </div>
                         <div class="modal-footer " style="justify-content: center;margin-top:20px;">
                             <button class="btn btn-success" type="button" id="edit_save_btn">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- add money modal -->
+    <div class="modal fade" id="add_money_modal" role="dialog">
+        <div class="modal-dialog  modal-dialog-centered ">
+
+            <!-- Modal content-->
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Money<br />
+                        <p style="text-align:left; font-size:13px;font-weight:500;">
+                        <p>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="uploadPreAssessmentId">
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Name</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" readonly placeholder="-"
+                                    id="add_money_user_name">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Amount</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" maxlength="10"
+                                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" placeholder="-"
+                                    id="deposit_amount">
+                            </div>
+                        </div>
+                        <div class="modal-footer " style="justify-content: center;margin-top:20px;">
+                            <button class="btn btn-success" type="button" id="deposit_btn">Deposit</button>
                         </div>
                     </form>
                 </div>
@@ -314,8 +356,11 @@
                                     data: 'user_id',
                                     render: function (data) {
                                         return `<div class="d-flex justify-content-around" >
-                                            <button class="btn-sm btn-info" onclick="setEditForm(${data})" data-toggle="modal" data-target="#edit_game_rate_modal" ><i
-                                          class="fa fa-pencil cp" aria-hidden="true"></i>&nbsp;Edit</button><button
+                                            <button class="btn-sm btn-info" onclick="setAddMoneyForm(${data})" data-toggle="modal" data-target="#add_money_modal" ><i
+                                          class="fa fa-plus cp" aria-hidden="true"></i>&nbsp;Add Money</button>
+                                          <button class="btn-sm btn-info" onclick="setEditForm(${data})" data-toggle="modal" data-target="#edit_game_rate_modal" ><i
+                                          class="fa fa-pencil cp" aria-hidden="true"></i>&nbsp;Edit</button>
+                                          <button
                                          class="btn-sm btn-danger" onclick="deleteGameRate(${data})" ><i class="fa fa-trash cp"
                                            aria-hidden="true"></i>&nbsp;Delete</button>
                                             </div>`;
@@ -359,6 +404,69 @@
                 document.getElementById('edit_user_email').value = gameNow[0]?.user_email
                 document.getElementById('edit_save_btn').setAttribute("onClick", `updateGameRate(${g_id})`);
             }
+        }
+        function setAddMoneyForm(g_id) {
+            let gameNow = gameRateList?.filter(m => m?.user_id === `${g_id}`)
+            if (gameNow?.length > 0) {
+                document.getElementById('add_money_user_name').value = gameNow[0]?.user_fullname
+                document.getElementById('deposit_btn').setAttribute("onClick", `depositAmount(${g_id})`);
+            }
+        }
+
+        function depositAmount(g_id) {
+            startLoader()
+            let deposit_amount = document.getElementById('deposit_amount').value
+            if (deposit_amount === "") {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Please enter deposit amount.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            }
+            $('#add_money_modal').modal('hide');
+            axiosInstance.post('deposit', {
+                "user_id": g_id,
+                "deposit_amount": parseInt(deposit_amount)
+            }).then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-check'
+                    }, {
+                        type: "success",
+                    });
+                    getGameRateList();
+                } else {
+                    if (response?.data?.is_logged_out) {
+                        localStorage.setItem("isLoggedIn", "false");
+                        location.href = "index.html";
+                    } else {
+                        $.notify({
+                            title: "",
+                            message: response.data?.msg,
+                            icon: 'fa fa-times'
+                        }, {
+                            type: "danger",
+                        });
+                    }
+                }
+            }, (error) => {
+                console.log('error', error);
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
         }
         function updateGameRate(g_id) {
             startLoader()
