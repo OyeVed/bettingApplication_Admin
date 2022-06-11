@@ -36,12 +36,7 @@ if(auth($token)){
         if($admin){
             $status = 200;
             $response = [
-                "msg" => "Admin data fetched successfully",
-                "admin" => [
-                    'full_name' => $admin->admin_fullname,
-                    "phone_number" => $admin->admin_phonenumber,
-                    "email" => $admin->admin_email_id
-                ]
+                "msg" => "Admin data fetched successfully"
             ];
         }else{
             $status = 203;
@@ -49,6 +44,8 @@ if(auth($token)){
                 "msg" => "Unauthorized - Password does not match"
             ];
         }
+        // echo '<pre>';
+        // print_r($admin);
 
     }
 }

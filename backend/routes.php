@@ -7,7 +7,7 @@ $router->endpoint('login', './views/login', ['POST'], FALSE, ['phone_number', 'p
 $router->endpoint('signup', './views/signup', ['POST'], FALSE, ['phone_number', 'password', 'email', 'full_name']);
 $router->endpoint('logout', './views/logout', ['POST'], FALSE, ['phone_number']);
 $router->endpoint('reset_password', './views/reset_password', ['POST'], FALSE, ['old_password', 'new_password', 'phone_number']);
-$router->endpoint('profile_save', './views/profile_save', ['GET'], FALSE, []);
+$router->endpoint('profile_save', './views/profile_save', ['POST'], FALSE, []);
 $router->endpoint('profile_fetch', './views/profile_fetch', ['GET'], FALSE, []);
 $router->endpoint('image_upload', './views/image_upload', ['POST'], FALSE, []);
 
