@@ -36,7 +36,7 @@ if(auth($token)){
         if($admin){
             $status = 200;
             $response = [
-                "msg" => "Admin data fetched successfully"
+                "msg" => $admin
             ];
         }else{
             $status = 203;
