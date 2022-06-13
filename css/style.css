@@ -247,6 +247,7 @@
   position: relative;
   margin: 10px 0px 10px 30px;
   border-radius: 5px;
+  background-color: var(--default-text-1);
 }
 .live_game_card .live_game_circle {
   position: absolute;
