@@ -6,17 +6,24 @@ require('middleware.php');
 require_once('../vendor/autoload.php');
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;
+use Dotenv\Dotenv;
+
+// Looing for .env at the root directory
+$dotenv = Dotenv::createImmutable('./');
+$dotenv->load();
 
 // retrieve request data
 $_POST = json_decode(file_get_contents("php://input"), true);
+
+//Retrive env variable
+$SECRET_KEY = $_ENV['SECRET_KEY'];
 
 // getting token from cookie
 $token = $_COOKIE["admin_jwt"];
 // checking is the user authorized 
 if(auth($token)){
     //extracting payload from jwt
-    $secret_key = "bGS6lzFqvvSQ8ALbOxatm7/Vk7mLQyzqaS34Q4oR1ew=";
-    $payload = JWT::decode($token, new Key($secret_key, 'HS512'));
+    $payload = JWT::decode($token, new Key($SECRET_KEY, 'HS512'));
 
     //fetch details from query parameter
     $phone_number = $_POST['phone_number'];

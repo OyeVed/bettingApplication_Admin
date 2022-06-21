@@ -11,18 +11,23 @@ $token = $_COOKIE["admin_jwt"];
 if(auth($token)){
 
     //fetch details from betting_history
-    $sql = "SELECT * FROM betting_history";
+    $sql = "SELECT ut.user_fullname, mt.market_fullname, bh.game_name, bh.game_type, bh.number, bh.points, bh.created_at
+    FROM betting_history as bh 
+    LEFT JOIN market_table as mt ON bh.market_id = mt.market_id 
+    LEFT JOIN user_table as ut ON bh.user_id = ut.user_id
+    ORDER BY bh.bet_id desc";
     $query = $con -> prepare($sql);
     if($query->execute()){
-        $bets = $query->fetchAll(PDO::FETCH_OBJ);
+        $bid_history = $query->fetchAll(PDO::FETCH_OBJ);
         $status = 200;
         $response = [
-            "msg" => $bets
+            "msg" => "Bets fetched successfully",
+            "bid_history" => $bid_history
         ];
     }else{
         $status = 203;
         $response = [
-            "msg" => "data can't be fetched"
+            "msg" => "Bets can't be fetched"
         ];
     }
     

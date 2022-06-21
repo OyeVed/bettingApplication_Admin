@@ -20,14 +20,8 @@ if(auth($token)){
     $deposit_amount = $_POST['deposit_amount'];
 
     //calculating funds available
-    $query = $con->prepare("
-    SELECT
-    amount_in_wallet
-    FROM transaction_details
-    WHERE user_id=:user_id
-    ORDER BY transaction_id DESC
-    LIMIT 1
-    ");
+    $query = $con->prepare("SELECT amount_in_wallet FROM transaction_details
+    WHERE user_id=:user_id ORDER BY transaction_id DESC LIMIT 1");
     $query->bindParam(':user_id', $user_id, PDO::PARAM_STR);
     if($query->execute()){
         $query->setFetchMode(PDO::FETCH_ASSOC);

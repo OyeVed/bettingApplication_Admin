@@ -6,9 +6,17 @@ require('middleware.php');
 require_once('../vendor/autoload.php');
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;
+use Dotenv\Dotenv;
+
+// Looing for .env at the root directory
+$dotenv = Dotenv::createImmutable('./');
+$dotenv->load();
 
 // retrieve request data
 $_POST = json_decode(file_get_contents("php://input"), true);
+
+//Retrive env variable
+$SECRET_KEY = $_ENV['SECRET_KEY'];
 
 // getting token from cookie
 $token = $_COOKIE["admin_jwt"];
@@ -16,8 +24,7 @@ $token = $_COOKIE["admin_jwt"];
 // checking is the user authorized 
 if(auth($token)){
 
-    $secret_key = "bGS6lzFqvvSQ8ALbOxatm7/Vk7mLQyzqaS34Q4oR1ew=";
-    $payload = JWT::decode($token, new Key($secret_key, 'HS512'));
+    $payload = JWT::decode($token, new Key($SECRET_KEY, 'HS512'));
 
     // retrieve required variables
     $phone_number = $_POST['phone_number'];
@@ -25,14 +32,7 @@ if(auth($token)){
     $full_name = $_POST['full_name'];
     
     
-    $sql = "SELECT * FROM admin_user_table WHERE admin_user_table.admin_user_id=:admin_user_id";
-    $query = $con -> prepare($sql);
-    $query->bindParam(':admin_user_id', $payload->admin_user_id, PDO::PARAM_STR);
-    $query->execute();
-
-    if($query->rowCount() != 0){
-
-        $sql = "UPDATE admin_user_table SET 
+    $sql = "UPDATE admin_user_table SET 
             admin_phonenumber=:user_phonenumber,
             admin_email_id=:user_email, 
             admin_fullname=:user_fullname
@@ -46,12 +46,7 @@ if(auth($token)){
             $user = $query->fetchAll(PDO::FETCH_OBJ);
             $status = 200;
             $response = [
-                "msg" => "Admin data updated successfully",
-                "admin" => [
-                    "phone_number" => $phone_number,
-                    "full_name" => $full_name,
-                    "email" => $email
-                ]
+                "msg" => "Admin data updated successfully"
             ];
         }else{
             $status = 203;
@@ -59,13 +54,4 @@ if(auth($token)){
                 "msg" => "Internal Server Error - User data can't be updated"
             ];
         }
-
-    }else{
-
-        $status = 203;
-        $response = [
-            "msg" => "Bad Request - Incorrect username."
-        ];
-
-    }
 }

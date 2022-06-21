@@ -19,7 +19,7 @@ if(auth($token)){
         $total_closed_games = 0;
         $markets = $query->fetchAll(PDO::FETCH_OBJ);
         foreach($markets as $market){
-            if(date($market->market_closetime) > date("H-i-s")){
+            if((date($market->market_opentime) < date("H-i-s")) && (date($market->market_closetime) >= date("H-i-s"))){
                 $status = "open";
                 $total_live_games += 1;
             }else{

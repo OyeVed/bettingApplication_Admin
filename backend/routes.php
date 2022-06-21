@@ -19,9 +19,7 @@ $router->endpoint('delete_market', './views/markets/manage_markets/delete_market
 
 // games/game_rates all routes
 $router->endpoint('fetch_game_rates', './views/markets/game_rates/fetch_game_rates', ['GET'], FALSE, []);
-$router->endpoint('add_game_rate', './views/markets/game_rates/add_game_rate', ['POST'], FALSE, ['game_name', 'game_rate']);
 $router->endpoint('edit_game_rate', './views/markets/game_rates/edit_game_rate', ['POST'], FALSE, ['game_rate', 'rate_id']);
-$router->endpoint('delete_game_rate', './views/markets/game_rates/delete_game_rate', ['POST'], FALSE, ['rate_id']);
 
 // fetching betting history
 $router->endpoint('bid_history', './views/markets/bid_history', ['GET'], FALSE, []);

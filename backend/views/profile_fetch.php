@@ -6,6 +6,14 @@ require('middleware.php');
 require_once('../vendor/autoload.php');
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;
+use Dotenv\Dotenv;
+
+// Looing for .env at the root directory
+$dotenv = Dotenv::createImmutable('./');
+$dotenv->load();
+
+//Retrive env variable
+$SECRET_KEY = $_ENV['SECRET_KEY'];
 
 // getting token from cookie
 $token = $_COOKIE["admin_jwt"];
@@ -14,8 +22,7 @@ $token = $_COOKIE["admin_jwt"];
 if(auth($token)){
 
     //extracting payload from jwt
-    $secret_key = "bGS6lzFqvvSQ8ALbOxatm7/Vk7mLQyzqaS34Q4oR1ew=";
-    $payload = JWT::decode($token, new Key($secret_key, 'HS512'));
+    $payload = JWT::decode($token, new Key($SECRET_KEY, 'HS512'));
 
     $sql = "SELECT * FROM admin_user_table WHERE admin_user_id=:admin_user_id";
     $query = $con -> prepare($sql);
@@ -44,8 +51,6 @@ if(auth($token)){
                 "msg" => "Unauthorized - Password does not match"
             ];
         }
-        // echo '<pre>';
-        // print_r($admin);
 
     }
 }
