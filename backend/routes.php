@@ -47,9 +47,17 @@ $router->endpoint('delete_admin_user', './views/admin_user/delete_admin_user', [
 $router->endpoint('fetch_livegames', './views/track_livegames/fetch_livegames', ['GET'], []);
 $router->endpoint('fetch_market_details', './views/track_livegames/fetch_market_details', ['POST'],FALSE, ['market_id']);
 
-//payments/deposit & withdraw routes
-$router->endpoint('deposit', './views/payments/deposit', ['POST'],FALSE, ['user_id', 'deposit_amount']); 
-$router->endpoint('withdraw', './views/payments/withdraw', ['POST'],FALSE, ['user_id', 'withdrawal_amount']); 
+//payments
+//deposit routes
+$router->endpoint('save_deposit', './views/payments/deposit/save_deposit', ['POST'],FALSE, ['user_id', 'deposit_amount']); 
+$router->endpoint('fetch_deposits', './views/payments/deposit/fetch_deposits', ['GET'],FALSE, []);
+
+//withdraw_routes
+$router->endpoint('fetch_withdraws', './views/payments/withdraw/fetch_withdraws', ['GET'],FALSE, []);
+$router->endpoint('save_withdraws', './views/payments/withdraw/save_withdraws', ['POST'],FALSE, ['user_id', 'withdrawal_amount']); 
 
 //dashboard 
 $router->endpoint('dashboard', './views/dashboard', ['GET'], FALSE, []);
+
+//referral
+$router->endpoint('affiliate', './views/affiliate', ['GET'], FALSE, []);

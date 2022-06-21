@@ -3,12 +3,6 @@
 // import db connection
 require("dbcon.php");
 require('middleware.php');
-require_once('../vendor/autoload.php');
-use \Firebase\JWT\JWT;
-use \Firebase\JWT\Key;
-
-// retrieve request data
-$_POST = json_decode(file_get_contents("php://input"), true);
 
 // getting token from cookie
 $token = $_COOKIE["admin_jwt"];
