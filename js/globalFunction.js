@@ -20,7 +20,7 @@ function authenticate() {
 }
 // baseURL: `/bettingApplication_Admin/backend/`,
 const axiosInstance = axios.create({
-  baseURL: `/backend/`,
+  baseURL: `/bettingApplication_Admin/backend/`,
   credentials: "include",
   withCredentials: true,
 });
