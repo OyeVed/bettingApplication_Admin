@@ -14,6 +14,7 @@ $token = $_COOKIE["admin_jwt"];
 if(auth($token)){
 
     $user_id = $_POST['user_id'];
+    $request_id = $_POST['request_id'];
     $withdrawal_amount = $_POST['withdrawal_amount'];
 
     //calculating funds available
@@ -38,10 +39,24 @@ if(auth($token)){
             $query->bindParam(':transaction_type', $transaction_type, PDO::PARAM_STR);
             $query->bindParam(':transaction_name', $transaction_name, PDO::PARAM_STR);
             if($query->execute()){
-                $status = 200;
-                $response = [
-                    "msg" => "Transaction placed successfully."
-                ];
+                $sql = "DELETE FROM pending_request WHERE 
+                request_id = :request_id AND user_id = :user_id AND withdrawal_amount = :withdrawal_amount";
+                $query = $con -> prepare($sql);
+                $query->bindParam(':request_id', $request_id, PDO::PARAM_STR);
+                $query->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+                $query->bindParam(':withdrawal_amount', $withdrawal_amount, PDO::PARAM_STR);
+                if($query->execute()){
+                    $status = 200;
+                    $response = [
+                        "msg" => "Transaction placed successfully."
+                    ];
+                }else{
+                    $status = 203;
+                    $response = [
+                        "msg" => "Request not removed from pending requests."
+                    ];
+                }
+                
             }else{
                 $status = 203;
                 $response = [
@@ -51,7 +66,8 @@ if(auth($token)){
         }else{
             $status = 203;
             $response = [
-                "msg" => "Insufficient funds."
+                "msg" => "Your wallet balance is low for this transaction",
+                "wallet_balance" => $available_amount
             ];
         }
 

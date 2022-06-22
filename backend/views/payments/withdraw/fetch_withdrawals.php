@@ -9,21 +9,20 @@ $token = $_COOKIE["admin_jwt"];
 
 // checking is the user authorized 
 if(auth($token)){
-    $withdraws = (object) [];
+    $withdrawals = (object) [];
     try{
-
         //pending request
-        $sql = "SELECT ut.user_fullname, pr.withdrawal_amount, pr.created_at
+        $sql = "SELECT pr.request_id, ut.user_fullname, pr.withdrawal_amount, pr.created_at
         FROM pending_request as pr
         LEFT JOIN user_table as ut
         ON pr.user_id = ut.user_id
-        ORDER BY pr.request_id desc";
+        ORDER BY pr.request_id asc";
         $query = $con -> prepare($sql);
         if($query->execute()){
             $pending_request = $query->fetchAll(PDO::FETCH_OBJ);
 
             if($pending_request){
-                $withdraws->pending_request = $pending_request;
+                $withdrawals->pending_request = $pending_request;
             }else{
                 $status = 203;
                 $response = [
@@ -47,7 +46,7 @@ if(auth($token)){
             $withdrawal_history = $query->fetchAll(PDO::FETCH_OBJ);
 
             if($withdrawal_history){
-                $withdraws->withdrawal_history = $withdrawal_history;
+                $withdrawals->withdrawal_history = $withdrawal_history;
             }else{
                 $status = 203;
                 $response = [
@@ -67,10 +66,14 @@ if(auth($token)){
         // success response
         $status = 200;
         $response = [
-            "msg" => "Withdraws fetched successfully",
-            "withdraws" => $withdraws
+            "msg" => "Withdrawals fetched successfully",
+            "withdrawals" => $withdrawals
         ];
     }catch(Exception $e){
-
+        $status = 203;
+        $response = [
+            "msg" => "Withdrawals can't be fetched.",
+            "error" => $e->getMessage()
+        ];
     }
 }
