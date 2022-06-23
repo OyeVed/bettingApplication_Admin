@@ -11,7 +11,7 @@ $token = $_COOKIE["admin_jwt"];
 if(auth($token)){
 
     //fetch details from market
-    $sql = "SELECT game_name, game_rate FROM game_rate_table ";
+    $sql = "SELECT game_name, game_rate ,rate_id FROM game_rate_table ";
     $query = $con -> prepare($sql);
     if($query->execute()){
         $game_rate = $query->fetchAll(PDO::FETCH_OBJ);
