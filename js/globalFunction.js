@@ -109,6 +109,59 @@ function convertTime(time) {
     minute: "numeric",
   });
 }
+const getDateInWord = (month) => {
+  switch (month) {
+    case 1:
+      return "Jan";
+      break;
+    case 2:
+      return "Feb";
+      break;
+    case 3:
+      return "Mar";
+      break;
+    case 4:
+      return "Apr";
+      break;
+    case 5:
+      return "May";
+      break;
+    case 6:
+      return "Jun";
+      break;
+    case 7:
+      return "Jul";
+      break;
+    case 8:
+      return "Aug";
+      break;
+    case 9:
+      return "Sep";
+      break;
+    case 10:
+      return "Oct";
+      break;
+    case 11:
+      return "Nov";
+    case 12:
+      return "Dec";
+    default:
+      break;
+  }
+};
+function convertDateAndTime(stamp) {
+  let day_now = new Date(stamp).getDate();
+  let month_now = new Date(stamp).getMonth();
+  let year_now = new Date(stamp).getFullYear();
+  let month_in_word = getDateInWord(month_now + 1);
+  let time_now = new Date(stamp).toLocaleTimeString("en-US", {
+    timeZone: "UTC",
+    hour12: true,
+    hour: "numeric",
+    minute: "numeric",
+  });
+  return `${day_now} ${month_in_word} ${year_now}, ${time_now}`;
+}
 
 function calculateTimeRemain(time) {
   var hourDiff =
