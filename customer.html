@@ -191,11 +191,7 @@
                                 <th>User Name</th>
                                 <th>Phone Number</th>
                                 <th>Email</th>
-                                <th>Withdrawals Method</th>
                                 <th>UPI Id</th>
-                                <th>Bank Name</th>
-                                <th>IFSC Code</th>
-                                <th>Account Number</th>
                                 <th style="min-width: 230px;">Action</th>
                             </tr>
                         </thead>
@@ -337,20 +333,9 @@
                                 {
                                     data: 'user_email',
                                 },
-                                {
-                                    data: 'withdrawal_method',
-                                },
+                               
                                 {
                                     data: 'upi_id',
-                                },
-                                {
-                                    data: 'bank_name',
-                                },
-                                {
-                                    data: 'ifsc_code',
-                                },
-                                {
-                                    data: 'account_number',
                                 },
                                 {
                                     data: 'user_id',
@@ -428,7 +413,7 @@
                 return
             }
             $('#add_money_modal').modal('hide');
-            axiosInstance.post('deposit', {
+            axiosInstance.post('save_deposits', {
                 "user_id": g_id,
                 "deposit_amount": parseInt(deposit_amount)
             }).then((response) => {

@@ -11,7 +11,7 @@ $token = $_COOKIE["admin_jwt"];
 if(auth($token)){
 
     //fetch details from market
-    $sql = "SELECT user_id, user_fullname, user_email, user_phonenumber, withdrawal_method, upi_id, bank_name, account_number, ifsc_code FROM user_table ORDER BY user_id DESC";
+    $sql = "SELECT user_id, user_fullname, user_email, user_phonenumber, upi_id FROM user_table ORDER BY user_id DESC";
     $query = $con -> prepare($sql);
     if($query->execute()){
         $users = $query->fetchAll(PDO::FETCH_OBJ);
