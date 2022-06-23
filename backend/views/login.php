@@ -2,15 +2,21 @@
 
 // import db connection
 require("dbcon.php");
+require('middleware.php');
 require_once('../vendor/autoload.php');
-use Firebase\JWT\JWT;
+use \Firebase\JWT\JWT;
+use \Firebase\JWT\Key;
+use Dotenv\Dotenv;
 
-// // Looing for .env at the root directory
-// $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-// $dotenv->load();
+// Looing for .env at the root directory
+$dotenv = Dotenv::createImmutable('./');
+$dotenv->load();
 
-// Retrive env variable
-// $SECRET_KEY = $_ENV["SECRET_KEY"];
+// retrieve request data
+$_POST = json_decode(file_get_contents("php://input"), true);
+
+//Retrive env variable
+$SECRET_KEY = $_ENV['SECRET_KEY'];
 
 // retrieve request data
 $_POST = json_decode(file_get_contents("php://input"), true);
@@ -40,9 +46,8 @@ if($query->rowCount() === 0){
     if($admin->admin_password === $password){
 
         // if admin is authenticated then generate a token with JWT
-        $secretKey  = 'bGS6lzFqvvSQ8ALbOxatm7/Vk7mLQyzqaS34Q4oR1ew=';
         $issuedAt   = new DateTimeImmutable();
-        $expire     = $issuedAt->modify('+60 minutes')->getTimestamp();      // Add 60 seconds
+        $expire     = $issuedAt->modify('+30 days')->getTimestamp();      // Add 30 days
         $serverName = "http://localhost/matkaApplicaton/backend/login";     // Retrieved from filtered POST data
 
         $data = [
@@ -56,11 +61,11 @@ if($query->rowCount() === 0){
 
         $jwt =  JWT::encode(
             $data,
-            $secretKey,
+            $SECRET_KEY,
             'HS512'
         );
         // sending jwt token to frontend with cookies
-        setcookie("admin_jwt", $jwt, time()+ (86400 * 7), "/","", 0); //86400*7 expiry time to 7 days
+        setcookie("admin_jwt", $jwt, time()+ (86400 * 30), "/","", 0); //86400*7 expiry time to 7 days
 
         $status = 200;
         $response = [

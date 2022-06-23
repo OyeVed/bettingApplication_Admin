@@ -14,26 +14,28 @@ $token = $_COOKIE["admin_jwt"];
 if(auth($token)){
     //find the market to edit
     $rate_id = $_POST['rate_id'];
-    //fetch details from query parameter
     $game_rate = $_POST['game_rate'];
+    $reward_factor = $game_rate/10;
 
     //fetch details from market
     $sql = "UPDATE game_rate_table SET 
-    game_rate = :game_rate
+    game_rate = :game_rate,
+    reward_factor = :reward_factor
     WHERE rate_id = :rate_id";
     $query = $con -> prepare($sql);
     $query->bindparam("game_rate", $game_rate, PDO::PARAM_STR);
+    $query->bindparam("reward_factor", $reward_factor, PDO::PARAM_STR);
     $query->bindparam("rate_id", $rate_id, PDO::PARAM_STR);
 
     if($query->execute()){
         $status = 200;
         $response = [
-            "msg" => "Game rates got updated."
+            "msg" => "Game rate edited successfully."
         ];
     }else{
         $status = 203;
         $response = [
-            "msg" => "Data can't be updated now."
+            "msg" => "Game rate can't be edited."
         ];
     }
     

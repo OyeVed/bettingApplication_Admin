@@ -12,7 +12,7 @@ if(auth($token)){
     $withdrawals = (object) [];
     try{
         //pending request
-        $sql = "SELECT pr.request_id, ut.user_fullname, pr.withdrawal_amount, pr.created_at
+        $sql = "SELECT pr.user_id, pr.request_id, ut.user_fullname, pr.withdrawal_amount, pr.created_at
         FROM pending_request as pr
         LEFT JOIN user_table as ut
         ON pr.user_id = ut.user_id

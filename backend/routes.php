@@ -27,9 +27,7 @@ $router->endpoint('win_history', './views/markets/win_history', ['GET'], FALSE, 
 
 // result publishing routes
 $router->endpoint('fetch_result', './views/markets/results/fetch_result', ['GET'], FALSE, []);
-$router->endpoint('add_result', './views/markets/results/add_result', ['POST'], FALSE, ['market_id', 'results']);
-$router->endpoint('edit_result', './views/markets/results/edit_result', ['POST'], FALSE, ['result_id', 'results']);
-$router->endpoint('delete_result', './views/markets/results/delete_result', ['POST'], FALSE, ['result_id']);
+$router->endpoint('announce_result', './views/markets/results/announce_result', ['POST'], FALSE, ['market_id', 'result']);
 
 // customers details related routes
 $router->endpoint('fetch_customers', './views/customers/fetch_customers', ['GET'], FALSE, []);
@@ -49,7 +47,7 @@ $router->endpoint('fetch_market_details', './views/track_livegames/fetch_market_
 
 //payments
 //deposit routes
-$router->endpoint('save_deposit', './views/payments/deposit/save_deposit', ['POST'],FALSE, ['user_id', 'deposit_amount']); 
+$router->endpoint('save_deposits', './views/payments/deposit/save_deposits', ['POST'],FALSE, ['user_id', 'deposit_amount']); 
 $router->endpoint('fetch_deposits', './views/payments/deposit/fetch_deposits', ['GET'],FALSE, []);
 
 //withdraw_routes
