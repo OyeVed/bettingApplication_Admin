@@ -207,10 +207,26 @@
                 </div>
             </div>
         </div>
-        <div class="tile" style="min-height: 300px;">
-            <div class="tile-title">
-                <h4>Details</h4>
-                <div id="market_details_div"></div>
+        <div class="tile">
+            <div class="tile-body">
+                <h4 class="mb-3">Details</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                        <thead>
+                            <tr>
+                                <th>Game Name</th>
+                                <th>Created At</th>
+                                <th>Game Type</th>
+                                <th>Number</th>
+                                <th>Point</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-center m-5" id="no_market_selected_id">No market selected.</p>
             </div>
         </div>
     </main>
@@ -224,7 +240,6 @@
     <!-- Data table plugin-->
     <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-    <!-- <script type="text/javascript">$('#sampleTable').DataTable();</script> -->
     <script type="text/javascript">
         authenticate();
         window.onload = function () {
@@ -254,7 +269,20 @@
                             <p>Close Time - ${convertTime(element?.market_closetime)}</p>
                             <div class="live_game_circle"><i class="fa fa-circle text-success" aria-hidden="true"></i>
                             </div>
+                            <button class="btn-sm btn-success" style="border:none;outline:none;" >Publish Result</button>
                         </div>`
+                        } else {
+                            live_game_container.innerHTML = live_game_container.innerHTML +
+                                `<div
+                                onclick="fetchMarketDetails(${element?.market_id})"
+                            class="cp live_game_card d-flex justify-content-center align-items-center text-center flex-column">
+                            <h6>${element?.market_fullname}</h6>
+                            <p>Open Time - ${convertTime(element?.market_opentime)}</p>
+                            <p>Close Time - ${convertTime(element?.market_closetime)}</p>
+                            <div class="live_game_circle_close" ><i class="fa fa-circle text-danger" aria-hidden="true"></i>
+                            </div>
+                            <button class="btn-sm btn-success" style="border:none;outline:none;" >Publish Result</button>
+                            </div>`
                         }
                     }
                 } else {
@@ -285,6 +313,7 @@
             })
         }
         function fetchMarketDetails(m_id) {
+            document.getElementById('no_market_selected_id').style.display = 'none';
             startLoader()
             axiosInstance.post('fetch_market_details', {
                 "market_id": m_id
@@ -300,17 +329,35 @@
                         }, {
                             type: "success",
                         });
+                        return
                     }
-                    let market_details_div = document.getElementById('market_details_div');
-                    market_details_div.innerHTML = ''
-                    for (let i = 0; i < dataSet.length; i++) {
-                        market_details_div.innerHTML = market_details_div.innerHTML +
-                            ` <div class="market_card_detail">
-                              <h5>${dataSet[i]?.game_name} - ${dataSet[i]?.number}</h5>
-                              <p>₹${dataSet[i]?.points}/-</p>
-                             </div>
-                            `
-                    }
+                    // let dataSet = response.data?.bid_history
+                    $(document).ready(function () {
+                        $('#sampleTable').DataTable().destroy();
+                        $('#sampleTable').DataTable({
+                            data: dataSet,
+                            columns: [
+                                {
+                                    data: 'game_name',
+                                },
+                                {
+                                    data: 'created_at',
+                                    render: function (data) {
+                                        return `<span>${convertDateAndTime(data)}</span>`;
+                                    },
+                                },
+                                {
+                                    data: 'game_type',
+                                },
+                                {
+                                    data: 'number',
+                                },
+                                {
+                                    data: 'points',
+                                },
+                            ],
+                        });
+                    });
                 } else {
                     if (response?.data?.is_logged_out) {
                         localStorage.setItem("isLoggedIn", "false");
