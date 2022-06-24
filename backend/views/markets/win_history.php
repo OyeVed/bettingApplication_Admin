@@ -10,7 +10,6 @@ $token = $_COOKIE["admin_jwt"];
 // checking is the user authorized 
 if(auth($token)){
 
-    // $transaction_type = "won";
     //fetch details from betting_history
     $sql = "SELECT ut.user_fullname, mt.market_fullname, wh.game_name, wh.win_amount, wh.created_at
     FROM win_history as wh 
@@ -18,7 +17,6 @@ if(auth($token)){
     LEFT JOIN user_table as ut ON wh.user_id = ut.user_id
     ORDER BY wh.win_id desc";
     $query = $con -> prepare($sql);
-    $query->bindparam(':transaction_type', $transaction_type, PDO::PARAM_STR);
     if($query->execute()){
         $win_history = $query->fetchAll(PDO::FETCH_OBJ);
         $status = 200;
@@ -29,7 +27,7 @@ if(auth($token)){
     }else{
         $status = 203;
         $response = [
-            "msg" => "data can't be fetched"
+            "msg" => "Win history can't be fetched"
         ];
     }
     

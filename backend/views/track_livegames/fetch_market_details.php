@@ -15,14 +15,21 @@ if(auth($token)){
 
     $market_id = $_POST['market_id'];
     //fetch details from market
-    $sql = "SELECT * FROM betting_history WHERE market_id = :market_id";
+    $sql = "SELECT bh.user_id, bh.market_id, ut.user_fullname, mt.market_fullname, bh.game_name, bh.game_type, bh.number, bh.points, bh.created_at
+    FROM betting_history as bh 
+    LEFT JOIN user_table as ut
+    ON ut.user_id = bh.user_id
+    LEFT JOIN market_table as mt
+    ON mt.market_id = bh.market_id
+    WHERE bh.market_id = :market_id";
     $query = $con -> prepare($sql);
     $query->bindparam("market_id", $market_id, PDO::PARAM_STR);
     if($query->execute()){
         $market_details = $query->fetchAll(PDO::FETCH_OBJ);
         $status = 200;
         $response = [
-            "msg" => $market_details
+            "msg" => "Market details fetched successfully",
+            "market_details" => $market_details
         ];
     }else{
         $status = 203;
