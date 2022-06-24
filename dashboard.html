@@ -146,16 +146,8 @@
             </li>
             <li><a class="app-menu__item" href="customer.html"><i class="app-menu__icon fa fa-user"></i><span
                         class="app-menu__label">Customer</span></a></li>
-            <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
-                        class="app-menu__icon fa fa-user-plus"></i><span class="app-menu__label">Admin Users</span><i
-                        class="treeview-indicator fa fa-angle-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a class="treeview-item" href="users.html"><i class="icon fa fa-circle-o"></i>User
-                            Table</a></li>
-                    <li><a class="treeview-item" href="roles.html"><i class="icon fa fa-circle-o"></i>
-                            Role Table</a></li>
-                </ul>
-            </li>
+            <li><a class="app-menu__item" href="users.html"><i class="app-menu__icon fa fa-user-plus"></i><span
+                        class="app-menu__label">Admin Users</span></a></li>
             <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
                         class="app-menu__icon fa fa-cog"></i><span class="app-menu__label">Settings</span><i
                         class="treeview-indicator fa fa-angle-right"></i></a>
@@ -201,7 +193,7 @@
                 <div class="widget-small warning coloured-icon"><i class="icon fa fa-inr fa-3x"></i>
                     <div class="info">
                         <h4>Total Withdrawals</h4>
-                        <p><b id="total_withdrawls" >0</b></p>
+                        <p><b id="total_withdrawls">0</b></p>
                     </div>
                 </div>
             </div>
@@ -225,7 +217,7 @@
                 <div class="widget-small info coloured-icon"><i class="icon fa fa-share-alt fa-3x"></i>
                     <div class="info">
                         <h4>Total Referrals</h4>
-                        <p><b id="total_referrals" >0</b></p>
+                        <p><b id="total_referrals">0</b></p>
                     </div>
                 </div>
             </div>
@@ -236,14 +228,14 @@
                         class="icon fa fa-money fa-3x"></i>
                     <div class="info">
                         <h4>Today's biddings</h4>
-                        <p><b id="todays_biddings" >0</b></p>
+                        <p><b id="todays_biddings">0</b></p>
                     </div>
                 </div>
                 <div style="min-height: 160px;" class="widget-small danger coloured-icon"><i
                         class="icon fa fa-inr fa-3x"></i>
                     <div class="info">
                         <h4>Today's winnings</h4>
-                        <p><b id="todays_winnings" >0</b></p>
+                        <p><b id="todays_winnings">0</b></p>
                     </div>
                 </div>
             </div>
@@ -295,24 +287,19 @@
                                 <td>${convertTime(dataSet[0]?.market_closetime)}</td>
                             </tr>`
                     }
-                    if(otherData?.todays_biddings)
-                    {
+                    if (otherData?.todays_biddings) {
                         $('#todays_biddings').html(otherData?.todays_biddings)
                     }
-                    if(otherData?.todays_winnings)
-                    {
+                    if (otherData?.todays_winnings) {
                         $('#todays_winnings').html(otherData?.todays_winnings)
                     }
-                    if(otherData?.total_bid_amount)
-                    {
+                    if (otherData?.total_bid_amount) {
                         $('#total_bid').html(otherData?.total_bid_amount)
                     }
-                    if(otherData?.total_deposits)
-                    {
+                    if (otherData?.total_deposits) {
                         $('#total_deposits').html(otherData?.total_deposits)
                     }
-                    if(otherData?.total_user)
-                    {
+                    if (otherData?.total_user) {
                         $('#total_users').html(otherData?.total_user)
                     }
                 } else {

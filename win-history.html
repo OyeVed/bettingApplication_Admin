@@ -146,16 +146,8 @@
             </li>
             <li><a class="app-menu__item" href="customer.html"><i class="app-menu__icon fa fa-user"></i><span
                         class="app-menu__label">Customer</span></a></li>
-            <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
-                        class="app-menu__icon fa fa-user-plus"></i><span class="app-menu__label">Admin Users</span><i
-                        class="treeview-indicator fa fa-angle-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a class="treeview-item" href="users.html"><i class="icon fa fa-circle-o"></i>User
-                            Table</a></li>
-                    <li><a class="treeview-item" href="roles.html"><i class="icon fa fa-circle-o"></i>
-                            Role Table</a></li>
-                </ul>
-            </li>
+            <li><a class="app-menu__item" href="users.html"><i class="app-menu__icon fa fa-user-plus"></i><span
+                        class="app-menu__label">Admin Users</span></a></li>
             <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
                         class="app-menu__icon fa fa-cog"></i><span class="app-menu__label">Settings</span><i
                         class="treeview-indicator fa fa-angle-right"></i></a>
@@ -186,11 +178,11 @@
                     <table class="table table-hover table-bordered" id="sampleTable">
                         <thead>
                             <tr>
-                                <th>User Id</th>
-                                <th>Transaction Id</th>
-                                <th>Transaction Name</th>
-                                <th>Transaction Amount</th>
-                                <th>Wallet Amount</th>
+                                <th>User Name</th>
+                                <th>Market Name</th>
+                                <th>Game Name</th>
+                                <th>Created At</th>
+                                <th>Win Amount</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -219,26 +211,32 @@
             axiosInstance.get('win_history').then((response) => {
                 endLoader()
                 if (response.status === 200) {
-                    let dataSet = response.data?.msg
+                    let dataSet = response.data['win-history']
                     $(document).ready(function () {
                         $('#sampleTable').DataTable().destroy();
                         $('#sampleTable').DataTable({
                             data: dataSet,
                             columns: [
                                 {
-                                    data: 'user_id',
+                                    data: 'user_fullname',
                                 },
                                 {
-                                    data: 'transaction_id',
+                                    data: 'market_fullname',
                                 },
                                 {
-                                    data: 'transaction_name',
+                                    data: 'game_name',
                                 },
                                 {
-                                    data: 'transaction_amount',
+                                    data: 'created_at',
+                                    render: function (data) {
+                                        return `<span>${convertDateAndTime(data)}</span>`;
+                                    },
                                 },
                                 {
-                                    data: 'amount_in_wallet',
+                                    data: 'win_amount',
+                                    render: function (data) {
+                                        return `<span>₹ ${data}</span>`;
+                                    },
                                 },
                             ],
                         });
