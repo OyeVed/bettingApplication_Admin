@@ -227,6 +227,51 @@
                                 <input class="form-control" type="time" id="add_market_end">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Select Days</label>
+                            <div class="col-md-8">
+                                <input type="checkbox" id="markAll" onclick="markAllDays()">
+                                <label for="markAll" class="ml-2">Mark All</label>
+                                <div class="d-flex justify-content-between pt-2" style="border-top: 1px solid gray;">
+                                    <div>
+                                        <input type="checkbox" id="sunday">
+                                        <label for="sunday" class="ml-2">Sunday</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="wednesday">
+                                        <label for="wednesday" class="ml-2">Wednesday</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="saturday">
+                                        <label for="saturday" class="ml-2">Saturday</label>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between ">
+                                    <div>
+                                        <input type="checkbox" id="monday">
+                                        <label for="monday" class="ml-2">Monday</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="thursday">
+                                        <label for="thursday" class="ml-2">Thursday</label>
+                                    </div>
+                                    <div style="width: 100px;">
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between ">
+                                    <div>
+                                        <input type="checkbox" id="tuesday">
+                                        <label for="tuesday" class="ml-2">Tuesday</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="friday">
+                                        <label for="friday" class="ml-2">Friday</label>
+                                    </div>
+                                    <div style="width: 120px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="modal-footer " style="justify-content: center;margin-top:20px;">
                             <button class="btn btn-success" type="button" onclick="addMarket()">Save</button>
                         </div>
@@ -295,6 +340,33 @@
         let marketList = []
         window.onload = function () {
             getMarketList()
+        }
+        var markAll = document.getElementById("markAll");
+        var sunday_id = document.getElementById('sunday')
+        var monday_id = document.getElementById('monday')
+        var tuesday_id = document.getElementById('tuesday')
+        var wednesday_id = document.getElementById('wednesday')
+        var thursday_id = document.getElementById('thursday')
+        var friday_id = document.getElementById('friday')
+        var saturday_id = document.getElementById('saturday')
+        function markAllDays() {
+            if (markAll.checked == true) {
+                sunday_id.checked = true
+                monday_id.checked = true
+                tuesday_id.checked = true
+                wednesday_id.checked = true
+                thursday_id.checked = true
+                friday_id.checked = true
+                saturday_id.checked = true
+            } else {
+                sunday_id.checked = false
+                monday_id.checked = false
+                tuesday_id.checked = false
+                wednesday_id.checked = false
+                thursday_id.checked = false
+                friday_id.checked = false
+                saturday_id.checked = false
+            }
         }
         function getMarketList() {
             startLoader()
