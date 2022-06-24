@@ -11,8 +11,14 @@ $token = $_COOKIE["admin_jwt"];
 if(auth($token)){
 
     //fetch details from market
-    $sql = "SELECT * FROM market_table ";
+    $curr_date = date("Y-m-d");
+    $sql = "SELECT mt.market_id, mt.market_fullname, mt.market_opentime, mt.market_closetime, mr.results
+    FROM market_table as mt
+    LEFT JOIN market_results as mr
+    ON mt.market_id = mr.market_id";
+    /* WHERE mr.created_at = :curr_date > */
     $query = $con -> prepare($sql);
+    $query->bindParam(':curr_date', $curr_date, PDO::PARAM_STR);
     if($query->execute()){
         $market_tile = [];
         $total_live_games = 0;
@@ -31,6 +37,7 @@ if(auth($token)){
                 "market_fullname" => $market->market_fullname,
                 "market_opentime" => $market->market_opentime,
                 "market_closetime" => $market->market_closetime,
+                "market_result" => $market->results,
                 "market_status" => $status
             ];
             array_push($market_tile, $market_details);
@@ -38,14 +45,15 @@ if(auth($token)){
 
         $status = 200;
         $response = [
-            "msg" => $market_tile,
+            "msg" => "Market data fetched successfully",
+            "market_tile" => $market_tile,
             "total_live_games" => $total_live_games,
             "total_closed_games" => $total_closed_games
         ];
     }else{
         $status = 203;
         $response = [
-            "msg" => "data can't be fetched"
+            "msg" => "Marekt data can't be fetched"
         ];
     }
     
