@@ -18,7 +18,6 @@ if(auth($token)){
     ON mt.market_id = mr.market_id";
     /* WHERE mr.created_at = :curr_date > */
     $query = $con -> prepare($sql);
-    $query->bindParam(':curr_date', $curr_date, PDO::PARAM_STR);
     if($query->execute()){
         $market_tile = [];
         $total_live_games = 0;
