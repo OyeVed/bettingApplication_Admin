@@ -52,7 +52,7 @@ $router->endpoint('fetch_deposits', './views/payments/deposit/fetch_deposits', [
 
 //withdraw_routes
 $router->endpoint('fetch_withdrawals', './views/payments/withdraw/fetch_withdrawals', ['GET'],FALSE, []);
-$router->endpoint('save_withdrawals', './views/payments/withdraw/save_withdrawals', ['POST'],FALSE, ['user_id', 'withdrawal_amount']); 
+$router->endpoint('save_withdrawals', './views/payments/withdraw/save_withdrawals', ['POST'],FALSE, ['request_id']); 
 
 //dashboard 
 $router->endpoint('dashboard', './views/dashboard', ['GET'], FALSE, []);
