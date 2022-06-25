@@ -18,7 +18,6 @@ if(auth($token)){
     $market_opentime = $_POST['market_opentime'];
     $market_closetime = $_POST['market_closetime'];
     $market_on_days = $_POST['market_on_days'];
-    print_r($market_on_days);
     $market_on_days = implode(",", $market_on_days);
 
     //fetch details from market
