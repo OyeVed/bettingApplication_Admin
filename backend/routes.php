@@ -13,8 +13,8 @@ $router->endpoint('image_upload', './views/image_upload', ['POST'], FALSE, []);
 
 // markets/manage_markets all routes
 $router->endpoint('fetch_market', './views/markets/manage_markets/fetch_market', ['GET'], FALSE, []);
-$router->endpoint('add_market', './views/markets/manage_markets/add_market', ['POST'], FALSE, ['market_fullname', 'market_opentime', 'market_closetime']);
-$router->endpoint('edit_market', './views/markets/manage_markets/edit_market', ['POST'], FALSE, ['market_fullname', 'market_opentime', 'market_closetime', 'market_id']);
+$router->endpoint('add_market', './views/markets/manage_markets/add_market', ['POST'], FALSE, ['market_fullname', 'market_opentime', 'market_closetime', 'market_on_days']);
+$router->endpoint('edit_market', './views/markets/manage_markets/edit_market', ['POST'], FALSE, ['market_fullname', 'market_opentime', 'market_closetime', 'market_id', 'market_on_days']);
 $router->endpoint('delete_market', './views/markets/manage_markets/delete_market', ['POST'], FALSE, ['market_id']);
 
 // games/game_rates all routes

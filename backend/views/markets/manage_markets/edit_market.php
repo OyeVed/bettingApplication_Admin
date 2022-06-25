@@ -18,18 +18,22 @@ if(auth($token)){
     $market_fullname = $_POST['market_fullname'];
     $market_opentime = $_POST['market_opentime'];
     $market_closetime = $_POST['market_closetime'];
+    $market_on_days = $_POST['market_on_days'];
+    $market_on_days = implode(",", $market_on_days);
 
     //fetch details from market
     $sql = "UPDATE market_table SET 
     market_fullname = :market_fullname,
     market_opentime = :market_opentime,
-    market_closetime = :market_closetime
+    market_closetime = :market_closetime,
+    market_on_days = :market_on_days
     WHERE market_id = :market_id";
     $query = $con -> prepare($sql);
     $query->bindparam("market_fullname", $market_fullname, PDO::PARAM_STR);
     $query->bindparam("market_opentime", $market_opentime, PDO::PARAM_STR);
     $query->bindparam("market_closetime", $market_closetime, PDO::PARAM_STR);
     $query->bindparam("market_id", $market_id, PDO::PARAM_STR);
+    $query->bindparam("market_on_days", $market_on_days, PDO::PARAM_STR);
 
     if($query->execute()){
         $status = 200;
