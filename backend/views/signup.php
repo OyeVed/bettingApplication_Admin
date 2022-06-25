@@ -30,7 +30,6 @@ if($query->rowCount() === 0){
     $query->bindParam(':admin_fullname', $full_name, PDO::PARAM_STR);
 
     if($query->execute()){
-        $user = $query->fetchAll(PDO::FETCH_OBJ);
         $status = 200;
         $response = [
             "msg" => "User created successfully",
