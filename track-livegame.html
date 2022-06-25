@@ -195,7 +195,7 @@
             <div class="col-md-8 col-12">
                 <div class="tile" style="height: 330px;overflow: auto;">
                     <h5>Live Games</h5>
-                    <div class="row" id="live_game_container"></div>
+                    <div class="d-flex justify-content-center flex-wrap" id="live_game_container"></div>
                 </div>
             </div>
         </div>
@@ -206,7 +206,9 @@
                     <table class="table table-hover table-bordered" id="sampleTable">
                         <thead>
                             <tr>
+                                <th>Market Name</th>
                                 <th>Game Name</th>
+                                <th>User Name</th>
                                 <th>Created At</th>
                                 <th>Game Type</th>
                                 <th>Number</th>
@@ -222,6 +224,50 @@
             </div>
         </div>
     </main>
+    <!-- announce result modal -->
+    <div class="modal fade" id="announce_result_modal" role="dialog">
+        <div class="modal-dialog  modal-dialog-centered ">
+
+            <!-- Modal content-->
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Market<br />
+                        <p style="text-align:left; font-size:13px;font-weight:500;">
+                        <p>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="uploadPreAssessmentId">
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Market Name</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" placeholder="-" id="add_market_name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Start Time</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="time" id="add_market_start">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">End Time</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="time" id="add_market_end">
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer " style="justify-content: center;margin-top:20px;">
+                            <button class="btn btn-success" type="button" onclick="addMarket()">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <!-- Essential javascripts for application to work-->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>
@@ -249,32 +295,33 @@
                     document.getElementById('closed_game_progress_bar').style.width = `${closed_game_progress}%`
                     let live_game_container = document.getElementById('live_game_container')
                     live_game_container.innerHTML = ''
-                    for (let i = 0; i < dataSet?.msg.length; i++) {
-                        let element = dataSet?.msg[i];
+                    for (let i = 0; i < dataSet?.market_tile.length; i++) {
+                        let element = dataSet?.market_tile[i];
                         if (element?.market_status === 'open') {
                             live_game_container.innerHTML = live_game_container.innerHTML +
                                 `<div
-                                onclick="fetchMarketDetails(${element?.market_id})"
+                                onclick="fetchMarketDetails(event.target.nodeName,${element?.market_id})"
                             class="cp live_game_card d-flex justify-content-center align-items-center text-center flex-column">
-                            <h6>${element?.market_fullname}</h6>
-                            <p>Open Time - ${convertTime(element?.market_opentime)}</p>
-                            <p>Close Time - ${convertTime(element?.market_closetime)}</p>
+                            <h5  class="mt-1" >${element?.market_fullname}</h5>
+                            <div class="d-flex justify-content-between w-100 pl-2 pr-2" style="font-size:13px;" > <p class="mb-0">Open Time <br />${convertTime(element?.market_opentime)}</p>
+                            <p class="mb-0">Close Time <br /> ${convertTime(element?.market_closetime)}</p></div>
                             <div class="live_game_circle"><i class="fa fa-circle text-success" aria-hidden="true"></i>
                             </div>
-                            <button class="btn-sm btn-success" style="border:none;outline:none;" >Publish Result</button>
+                            <p class="mt-1 mb-2 " style="font-size:15px;font-weight:700;">${element?.market_result || 'xxx-xx-xxx'}</p>
                         </div>`
                         } else {
                             live_game_container.innerHTML = live_game_container.innerHTML +
                                 `<div
-                                onclick="fetchMarketDetails(${element?.market_id})"
+                                onclick="fetchMarketDetails(event.target.nodeName,${element?.market_id})"
                             class="cp live_game_card d-flex justify-content-center align-items-center text-center flex-column">
-                            <h6>${element?.market_fullname}</h6>
-                            <p>Open Time - ${convertTime(element?.market_opentime)}</p>
-                            <p>Close Time - ${convertTime(element?.market_closetime)}</p>
-                            <div class="live_game_circle_close" ><i class="fa fa-circle text-danger" aria-hidden="true"></i>
+                            <h5  class="mt-1" >${element?.market_fullname}</h5>
+                            <div class="d-flex justify-content-between w-100 pl-2 pr-2" style="font-size:13px;" > <p class="mb-0">Open Time <br />${convertTime(element?.market_opentime)}</p>
+                            <p class="mb-0">Close Time <br /> ${convertTime(element?.market_closetime)}</p></div>
+                            <div class="live_game_circle"><i class="fa fa-circle text-danger" aria-hidden="true"></i>
                             </div>
-                            <button class="btn-sm btn-success" style="border:none;outline:none;" >Publish Result</button>
-                            </div>`
+                            <p class="mt-1 mb-2 " style="font-size:15px;font-weight:700;">${element?.market_result || 'xxx-xx-xxx'}</p>
+                            ${element?.market_result ? '' : `<button class="btn-sm btn-success" style="border:none;outline:none;"data-toggle="modal" data-target="#announce_result_modal" id="announce_result_id" >Announce Result</button>`} 
+                        </div>`
                         }
                     }
                 } else {
@@ -304,7 +351,10 @@
                 });
             })
         }
-        function fetchMarketDetails(m_id) {
+
+
+        function fetchMarketDetails(thisElement,m_id) {
+            if(thisElement !="DIV") return
             document.getElementById('no_market_selected_id').style.display = 'none';
             startLoader()
             axiosInstance.post('fetch_market_details', {
@@ -312,7 +362,7 @@
             }).then((response) => {
                 endLoader()
                 if (response.status === 200) {
-                    let dataSet = response?.data?.msg
+                    let dataSet = response?.data?.market_details
                     if (dataSet?.length === 0) {
                         $.notify({
                             title: "",
@@ -321,16 +371,20 @@
                         }, {
                             type: "success",
                         });
-                        return
                     }
-                    // let dataSet = response.data?.bid_history
                     $(document).ready(function () {
                         $('#sampleTable').DataTable().destroy();
                         $('#sampleTable').DataTable({
                             data: dataSet,
                             columns: [
                                 {
+                                    data: 'market_fullname',
+                                },
+                                {
                                     data: 'game_name',
+                                },
+                                {
+                                    data: 'user_fullname',
                                 },
                                 {
                                     data: 'created_at',
@@ -376,6 +430,9 @@
                     type: "danger"
                 });
             })
+        }
+        function announceResult(market_id) {
+
         }
     </script>
 </body>
