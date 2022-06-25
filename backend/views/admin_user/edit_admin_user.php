@@ -29,18 +29,21 @@ if(auth($token)){
     $phone_number = $_POST['phone_number'];
     $full_name = $_POST['full_name'];
     $email = $_POST['email'];
+    $datetime = date("Y-m-d H:i:s");
 
     //fetch details from market
     $sql = "UPDATE admin_user_table SET 
-        admin_phonenumber=:admin_phonenumber,
-        admin_email_id=:admin_email_id, 
-        admin_fullname=:admin_fullname
+    admin_phonenumber=:admin_phonenumber,
+    admin_email_id=:admin_email_id, 
+    admin_fullname=:admin_fullname,
+    updated_at = :updated_at
     WHERE admin_user_id = :admin_user_id ";
     $query = $con -> prepare($sql);
     $query->bindParam(':admin_phonenumber', $phone_number, PDO::PARAM_STR);
     $query->bindParam(':admin_email_id', $email, PDO::PARAM_STR);
     $query->bindParam(':admin_fullname', $full_name, PDO::PARAM_STR);
     $query->bindParam(':admin_user_id', $payload->admin_user_id, PDO::PARAM_STR);
+    $query->bindparam(":updated_at", $datetime, PDO::PARAM_STR);
 
     if($query->execute()){
         $status = 200;

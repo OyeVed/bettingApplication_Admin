@@ -19,8 +19,9 @@ if(auth($token)){
     WHERE market_id = :market_id";
     $query = $con -> prepare($sql);
     $query->bindparam("market_id", $market_id, PDO::PARAM_STR);
+    $query->execute();
 
-    if($query->execute()){
+    if($query->rowCount() != 0){
         $status = 200;
         $response = [
             "msg" => "Market got deleted."

@@ -12,6 +12,7 @@ if(auth($token)){
 
     $user_id = $_POST['user_id'];
     $deposit_amount = $_POST['deposit_amount'];
+    $datetime = date("Y-m-d H:i:s");
 
     //calculating funds available
     $query = $con->prepare("SELECT amount_in_wallet FROM transaction_details
@@ -25,14 +26,16 @@ if(auth($token)){
         $transaction_type = "deposit";
         $transaction_name = $deposit_amount . " rupess added to wallet";
         $amount_in_wallet = $available_amount + $deposit_amount;
-        $sql = "INSERT INTO transaction_details ( user_id, transaction_type, transaction_name, transaction_amount, amount_in_wallet) VALUES
-        (:user_id, :transaction_type, :transaction_name, :transaction_amount, :amount_in_wallet)";
+        $sql = "INSERT INTO transaction_details ( user_id, transaction_type, transaction_name, transaction_amount, amount_in_wallet, created_at, updated_at) VALUES
+        (:user_id, :transaction_type, :transaction_name, :transaction_amount, :amount_in_wallet, :created_at, :updated_at)";
         $query = $con->prepare($sql);
         $query->bindParam(':user_id', $user_id, PDO::PARAM_STR);
         $query->bindParam(':transaction_amount', $deposit_amount, PDO::PARAM_STR);
         $query->bindParam(':amount_in_wallet', $amount_in_wallet, PDO::PARAM_STR);
         $query->bindParam(':transaction_type', $transaction_type, PDO::PARAM_STR);
         $query->bindParam(':transaction_name', $transaction_name, PDO::PARAM_STR);
+        $query->bindparam(":created_at", $datetime, PDO::PARAM_STR);
+        $query->bindparam(":updated_at", $datetime, PDO::PARAM_STR);
         if($query->execute()){
             $status = 200;
             $response = [
