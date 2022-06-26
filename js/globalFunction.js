@@ -102,8 +102,8 @@ function signOut() {
   }
 }
 function convertTime(time) {
-  return new Date("1970-01-01T" + time + "Z").toLocaleTimeString("en-US", {
-    timeZone: "UTC",
+  return new Date("1970-01-01T" + time + "Z").toLocaleTimeString("IST", {
+    timeZone: "IST",
     hour12: true,
     hour: "numeric",
     minute: "numeric",
@@ -154,8 +154,8 @@ function convertDateAndTime(stamp) {
   let month_now = new Date(stamp).getMonth();
   let year_now = new Date(stamp).getFullYear();
   let month_in_word = getDateInWord(month_now + 1);
-  let time_now = new Date(stamp).toLocaleTimeString("en-US", {
-    timeZone: "UTC",
+  let time_now = new Date(stamp).toLocaleTimeString("IST", {
+    timeZone: "IST",
     hour12: true,
     hour: "numeric",
     minute: "numeric",

@@ -484,10 +484,13 @@
                 });
                 return
             }
+            let todaysMOnth = new Date().getMonth() + 1
+            let todayDate = `${new Date().getFullYear()}-${todaysMOnth < 10 ? `0${todaysMOnth}` : todaysMOnth}-${new Date().getDate()}`
             startLoader()
             axiosInstance.post('announce_result', {
                 "market_id": market_id,
-                "result": `${open_panna?.value}-${jodi_id?.value}-${close_panna?.value}`
+                "result": `${open_panna?.value}-${jodi_id?.value}-${close_panna?.value}`,
+                "result_date": todayDate
             }).then((response) => {
                 endLoader()
                 if (response.status === 200) {
@@ -514,6 +517,7 @@
                     }
                 }
                 console.log(response)
+                $('#announce_result_modal').modal('hide');
             }, (error) => {
                 console.log('error', error);
                 endLoader()
