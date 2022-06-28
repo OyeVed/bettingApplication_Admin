@@ -182,6 +182,7 @@
                         <thead>
                             <tr>
                                 <th>Market Name</th>
+                                <th>Market On days</th>
                                 <th>Open Time</th>
                                 <th>Close Time</th>
                                 <th style="width: 135px;">Action</th>
@@ -230,42 +231,42 @@
                         <div class="form-group row">
                             <label class="control-label col-md-3">Select Days</label>
                             <div class="col-md-8">
-                                <input type="checkbox" id="markAll" onclick="markAllDays()">
-                                <label for="markAll" class="ml-2">Mark All</label>
+                                <input type="checkbox" id="markAll_add" onclick="markAllDays('add');">
+                                <label for="markAll_add" class="ml-2">Mark All</label>
                                 <div class="d-flex justify-content-between pt-2" style="border-top: 1px solid gray;">
                                     <div>
-                                        <input type="checkbox" id="sunday">
-                                        <label for="sunday" class="ml-2">Sunday</label>
+                                        <input type="checkbox" id="sunday_add">
+                                        <label for="sunday_add" class="ml-2">Sunday</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="wednesday">
-                                        <label for="wednesday" class="ml-2">Wednesday</label>
+                                        <input type="checkbox" id="wednesday_add">
+                                        <label for="wednesday_add" class="ml-2">Wednesday</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="saturday">
-                                        <label for="saturday" class="ml-2">Saturday</label>
+                                        <input type="checkbox" id="saturday_add">
+                                        <label for="saturday_add" class="ml-2">Saturday</label>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between ">
                                     <div>
-                                        <input type="checkbox" id="monday">
-                                        <label for="monday" class="ml-2">Monday</label>
+                                        <input type="checkbox" id="monday_add">
+                                        <label for="monday_add" class="ml-2">Monday</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="thursday">
-                                        <label for="thursday" class="ml-2">Thursday</label>
+                                        <input type="checkbox" id="thursday_add">
+                                        <label for="thursday_add" class="ml-2">Thursday</label>
                                     </div>
                                     <div style="width: 100px;">
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between ">
                                     <div>
-                                        <input type="checkbox" id="tuesday">
-                                        <label for="tuesday" class="ml-2">Tuesday</label>
+                                        <input type="checkbox" id="tuesday_add">
+                                        <label for="tuesday_add" class="ml-2">Tuesday</label>
                                     </div>
                                     <div>
-                                        <input type="checkbox" id="friday">
-                                        <label for="friday" class="ml-2">Friday</label>
+                                        <input type="checkbox" id="friday_add">
+                                        <label for="friday_add" class="ml-2">Friday</label>
                                     </div>
                                     <div style="width: 120px;">
                                     </div>
@@ -315,6 +316,51 @@
                                 <input class="form-control" type="time" id="edit_market_end">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Select Days</label>
+                            <div class="col-md-8">
+                                <input type="checkbox" id="markAll_edit" onclick="markAllDays('edit')">
+                                <label for="markAll_edit" class="ml-2">Mark All</label>
+                                <div class="d-flex justify-content-between pt-2" style="border-top: 1px solid gray;">
+                                    <div>
+                                        <input type="checkbox" id="sunday_edit">
+                                        <label for="sunday_edit" class="ml-2">Sunday</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="wednesday_edit">
+                                        <label for="wednesday_edit" class="ml-2">Wednesday</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="saturday_edit">
+                                        <label for="saturday_edit" class="ml-2">Saturday</label>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between ">
+                                    <div>
+                                        <input type="checkbox" id="monday_edit">
+                                        <label for="monday_edit" class="ml-2">Monday</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="thursday_edit">
+                                        <label for="thursday_edit" class="ml-2">Thursday</label>
+                                    </div>
+                                    <div style="width: 100px;">
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between ">
+                                    <div>
+                                        <input type="checkbox" id="tuesday_edit">
+                                        <label for="tuesday_edit" class="ml-2">Tuesday</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="friday_edit">
+                                        <label for="friday_edit" class="ml-2">Friday</label>
+                                    </div>
+                                    <div style="width: 120px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="modal-footer " style="justify-content: center;margin-top:20px;">
                             <button class="btn btn-success" type="button" id="edit_save_btn">Save</button>
                         </div>
@@ -341,15 +387,15 @@
         window.onload = function () {
             getMarketList()
         }
-        var markAll = document.getElementById("markAll");
-        var sunday_id = document.getElementById('sunday')
-        var monday_id = document.getElementById('monday')
-        var tuesday_id = document.getElementById('tuesday')
-        var wednesday_id = document.getElementById('wednesday')
-        var thursday_id = document.getElementById('thursday')
-        var friday_id = document.getElementById('friday')
-        var saturday_id = document.getElementById('saturday')
-        function markAllDays() {
+        function markAllDays(keyNow) {
+            var markAll = document.getElementById(`markAll_${keyNow}`);
+            var sunday_id = document.getElementById(`sunday_${keyNow}`)
+            var monday_id = document.getElementById(`monday_${keyNow}`)
+            var tuesday_id = document.getElementById(`tuesday_${keyNow}`)
+            var wednesday_id = document.getElementById(`wednesday_${keyNow}`)
+            var thursday_id = document.getElementById(`thursday_${keyNow}`)
+            var friday_id = document.getElementById(`friday_${keyNow}`)
+            var saturday_id = document.getElementById(`saturday_${keyNow}`)
             if (markAll.checked == true) {
                 sunday_id.checked = true
                 monday_id.checked = true
@@ -373,6 +419,7 @@
             axiosInstance.get('fetch_market').then((response) => {
                 endLoader()
                 if (response.status === 200) {
+                    console.log(response)
                     let dataSet = response.data?.msg
                     marketList = dataSet
                     $(document).ready(function () {
@@ -382,6 +429,9 @@
                             columns: [
                                 {
                                     data: 'market_fullname',
+                                },
+                                {
+                                    data: 'market_on_days',
                                 },
                                 {
                                     data: 'market_opentime',
@@ -436,6 +486,14 @@
             })
         }
         function addMarket() {
+            var markAll = document.getElementById("markAll_add");
+            var sunday_id = document.getElementById('sunday_add')
+            var monday_id = document.getElementById('monday_add')
+            var tuesday_id = document.getElementById('tuesday_add')
+            var wednesday_id = document.getElementById('wednesday_add')
+            var thursday_id = document.getElementById('thursday_add')
+            var friday_id = document.getElementById('friday_add')
+            var saturday_id = document.getElementById('saturday_add')
             startLoader()
             let add_market_name = document.getElementById('add_market_name').value;
             let add_market_start = document.getElementById('add_market_start').value;
@@ -487,14 +545,52 @@
                 });
                 return
             }
+            let market_on_days = []
+            if (markAll?.checked) {
+                market_on_days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+            } else {
+                if (sunday_id.checked) {
+                    market_on_days?.push('Sunday')
+                }
+                if (monday_id.checked) {
+                    market_on_days?.push('Monday')
+                }
+                if (tuesday_id.checked) {
+                    market_on_days?.push('Tuesday')
+                }
+                if (wednesday_id.checked) {
+                    market_on_days?.push('Wednesday')
+                }
+                if (thursday_id.checked) {
+                    market_on_days?.push('Thursday')
+                }
+                if (friday_id.checked) {
+                    market_on_days?.push('Friday')
+                }
+                if (saturday_id.checked) {
+                    market_on_days?.push('Saturday')
+                }
+            }
             $('#add_market_modal').modal('hide');
             axiosInstance.post('add_market', {
                 "market_fullname": add_market_name,
                 "market_opentime": add_market_start + ":00",
-                "market_closetime": add_market_end + ":00"
+                "market_closetime": add_market_end + ":00",
+                "market_on_days": market_on_days
             }).then((response) => {
                 endLoader()
                 if (response.status === 200) {
+                    document.getElementById('add_market_name').value = ''
+                    document.getElementById('add_market_end').value = ''
+                    document.getElementById('add_market_start').value = ''
+                    markAll.checked = false
+                    sunday_id.checked = false
+                    monday_id.checked = false
+                    tuesday_id.checked = false
+                    wednesday_id.checked = false
+                    thursday_id.checked = false
+                    friday_id.checked = false
+                    saturday_id.checked = false
                     $.notify({
                         title: "",
                         message: response.data?.msg,
@@ -530,15 +626,72 @@
             })
         }
         function setEditForm(m_id) {
+            var markAll = document.getElementById("markAll_edit");
+            var sunday_id = document.getElementById('sunday_edit')
+            var monday_id = document.getElementById('monday_edit')
+            var tuesday_id = document.getElementById('tuesday_edit')
+            var wednesday_id = document.getElementById('wednesday_edit')
+            var thursday_id = document.getElementById('thursday_edit')
+            var friday_id = document.getElementById('friday_edit')
+            var saturday_id = document.getElementById('saturday_edit')
             let marketNow = marketList?.filter(m => m?.market_id === `${m_id}`)
+            console.log(marketNow)
             if (marketNow?.length > 0) {
                 document.getElementById('edit_market_name').value = marketNow[0]?.market_fullname
                 document.getElementById('edit_market_start').value = marketNow[0]?.market_opentime
                 document.getElementById('edit_market_end').value = marketNow[0]?.market_closetime
                 document.getElementById('edit_save_btn').setAttribute("onClick", `updateMarket(${m_id})`);
+                let market_onNow = marketNow[0]?.market_on_days
+                setTimeout(() => {
+                    if (market_onNow == "Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday") {
+                        markAll.checked = true
+                        sunday_id.checked = true
+                        monday_id.checked = true
+                        tuesday_id.checked = true
+                        wednesday_id.checked = true
+                        thursday_id.checked = true
+                        friday_id.checked = true
+                        saturday_id.checked = true
+                    } else {
+                        markAll.checked = false
+
+                        if (market_onNow?.includes('Sunday'))
+                            sunday_id.checked = true
+                        else sunday_id.checked = false
+                        if (market_onNow?.includes('Monday'))
+                            monday_id.checked = true
+                        else monday_id.checked = false
+                        if (market_onNow?.includes('Tuesday'))
+                            tuesday_id.checked = true
+                        else tuesday_id.checked = false
+                        if (market_onNow?.includes('Wednesday'))
+                            wednesday_id.checked = true
+                        else wednesday_id.checked = false
+                        if (market_onNow?.includes('Thursday'))
+                            thursday_id.checked = true
+                        else thursday_id.checked = false
+                        if (market_onNow?.includes('Friday'))
+                            friday_id.checked = true
+                        else friday_id.checked = false
+                        if (market_onNow?.includes('Saturday'))
+                            saturday_id.checked = true
+                        else saturday_id.checked = false
+                    }
+
+                }, 200);
+
+
             }
         }
         function updateMarket(m_id) {
+            var markAll = document.getElementById("markAll_edit");
+            var sunday_id = document.getElementById('sunday_edit')
+            var monday_id = document.getElementById('monday_edit')
+            var tuesday_id = document.getElementById('tuesday_edit')
+            var wednesday_id = document.getElementById('wednesday_edit')
+            var thursday_id = document.getElementById('thursday_edit')
+            var friday_id = document.getElementById('friday_edit')
+            var saturday_id = document.getElementById('saturday_edit')
             startLoader()
             let edit_market_name = document.getElementById('edit_market_name').value;
             let edit_market_start = document.getElementById('edit_market_start').value;
@@ -574,12 +727,39 @@
                 });
                 return
             }
+            let market_on_days = []
+            if (markAll?.checked) {
+                market_on_days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+            } else {
+                if (sunday_id.checked) {
+                    market_on_days?.push('Sunday')
+                }
+                if (monday_id.checked) {
+                    market_on_days?.push('Monday')
+                }
+                if (tuesday_id.checked) {
+                    market_on_days?.push('Tuesday')
+                }
+                if (wednesday_id.checked) {
+                    market_on_days?.push('Wednesday')
+                }
+                if (thursday_id.checked) {
+                    market_on_days?.push('Thursday')
+                }
+                if (friday_id.checked) {
+                    market_on_days?.push('Friday')
+                }
+                if (saturday_id.checked) {
+                    market_on_days?.push('Saturday')
+                }
+            }
             $('#edit_market_modal').modal('hide');
             axiosInstance.post('edit_market', {
                 "market_id": m_id,
                 "market_fullname": edit_market_name,
                 "market_opentime": edit_market_start,
-                "market_closetime": edit_market_end
+                "market_closetime": edit_market_end,
+                "market_on_days": market_on_days
             }).then((response) => {
                 endLoader()
                 if (response.status === 200) {
