@@ -26,6 +26,7 @@ if(auth($token)){
 
     //extracting payload from jwt
     $payload = JWT::decode($token, new Key($SECRET_KEY, 'HS512'));
+    $datetime = date("Y-m-d H:i:s");
 
     
     //Checking files specifcation
@@ -42,10 +43,12 @@ if(auth($token)){
         
         
             // query to insert the submitted data
-            $sql = "UPDATE admin_user_table SET profile_image = :profile_image WHERE admin_user_id = :admin_user_id";
+            $sql = "UPDATE admin_user_table SET profile_image = :profile_image,
+            updated_at = :updated_at WHERE admin_user_id = :admin_user_id";
             $query = $con -> prepare($sql);
             $query->bindParam(':admin_user_id', $payload->admin_user_id, PDO::PARAM_STR);
             $query->bindParam(':profile_image', $image, PDO::PARAM_LOB);
+            $query->bindparam(":updated_at", $datetime, PDO::PARAM_STR);
             if($query->execute()){
                 $status = 200;
                 $response = [

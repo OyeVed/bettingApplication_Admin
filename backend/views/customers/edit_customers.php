@@ -38,6 +38,7 @@ if(auth($token)){
     $bank_name = $_POST['bank_name'];
     $account_number = $_POST['account_number'];
     $ifsc_code = $_POST['ifsc_code'];
+    $datetime = date("Y-m-d H:i:s");
 
     //fetch details from market
     $sql = "UPDATE user_table SET 
@@ -49,8 +50,10 @@ if(auth($token)){
     upi_id=:upi_id,
     bank_name=:bank_name,
     account_number=:account_number,
-    ifsc_code=:ifsc_code
+    ifsc_code=:ifsc_code,
+    updated_at = :updated_at
     WHERE user_id = :user_id ";
+    
     $query = $con -> prepare($sql);
     $query->bindParam(':user_phonenumber', $phone_number, PDO::PARAM_STR);
     $query->bindParam(':user_email', $email, PDO::PARAM_STR);
@@ -62,6 +65,7 @@ if(auth($token)){
     $query->bindParam(':account_number', $account_number, PDO::PARAM_STR);
     $query->bindParam(':ifsc_code', $ifsc_code, PDO::PARAM_STR);
     $query->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+    $query->bindparam(":updated_at", $datetime, PDO::PARAM_STR);
 
     if($query->execute()){
         $status = 200;
