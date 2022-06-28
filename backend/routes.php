@@ -27,6 +27,7 @@ $router->endpoint('win_history', './views/markets/win_history', ['GET'], FALSE, 
 
 // result publishing routes
 $router->endpoint('fetch_result', './views/markets/results/fetch_result', ['GET'], FALSE, []);
+$router->endpoint('result_date', './views/markets/results/result_date', ['POST'], FALSE, ['market_id']);
 $router->endpoint('announce_result', './views/markets/results/announce_result', ['POST'], FALSE, ['market_id', 'result']);
 
 // customers details related routes

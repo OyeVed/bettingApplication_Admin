@@ -24,7 +24,7 @@ if(auth($token)){
             $available_amount = $row['amount_in_wallet'];
         }
         $transaction_type = "deposit";
-        $transaction_name = $deposit_amount . " rupess added to wallet";
+        $transaction_name = "Credited to wallet";
         $amount_in_wallet = $available_amount + $deposit_amount;
         $sql = "INSERT INTO transaction_details ( user_id, transaction_type, transaction_name, transaction_amount, amount_in_wallet, created_at, updated_at) VALUES
         (:user_id, :transaction_type, :transaction_name, :transaction_amount, :amount_in_wallet, :created_at, :updated_at)";

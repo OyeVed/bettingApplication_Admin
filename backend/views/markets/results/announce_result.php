@@ -65,7 +65,7 @@ if(auth($token)){
         $transaction_type = "won";
         $transaction_amount = $winning_amount;
         $available_amount = 0;
-        $transaction_name = "You won ".$winning_amount."rs in ".$user['game_name'];
+        $transaction_name = "You won";
          //calculating funds available
         $query = $con->prepare(" SELECT amount_in_wallet FROM transaction_details WHERE user_id=:user_id
         ORDER BY transaction_id DESC LIMIT 1 ");
@@ -132,28 +132,3 @@ if(auth($token)){
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// $curr_date = date("Y-m-d");
-// $sql = "SELECT created_at FROM betting_history as a WHERE user_id=:user_id AND CAST(created_at AS DATE) = :curr_date";
-// $query = $con -> prepare($sql);
-// $query->bindParam(':user_id', $user_id, PDO::PARAM_STR);
-// $query->bindParam(':curr_date', $curr_date, PDO::PARAM_STR);
-// $query->execute();
-// $created_at = $query->fetchAll(PDO::FETCH_ASSOC);
