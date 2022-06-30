@@ -10,6 +10,8 @@ $database_tables = array(
         `admin_phonenumber` VARCHAR(255) NOT NULL,
         `admin_fullname` VARCHAR(255) NOT NULL,
         `profile_image` BLOB,
+        `otp` INTEGER(10),
+        `otp_created_at` VARCHAR(255),
         `created_at` DATETIME NOT NULL,
         `updated_at` DATETIME NOT NULL
     )",
