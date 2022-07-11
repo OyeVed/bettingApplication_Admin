@@ -25,15 +25,14 @@ $token = $_COOKIE["admin_jwt"];
 if(auth($token)){
 
     $payload = JWT::decode($token, new Key($SECRET_KEY, 'HS512'));
-
-    $phone_number = $_POST['phone_number'];
+    
     $old_password = md5($_POST['old_password']);
     $new_password = $_POST['new_password'];
     $datetime = date("Y-m-d H:i:s");
     
-    $sql = "SELECT * FROM admin_user_table WHERE admin_user_table.admin_phonenumber=:phone_number";
+    $sql = "SELECT * FROM admin_user_table WHERE admin_user_id=:admin_user_id";
     $query = $con -> prepare($sql);
-    $query->bindParam(':phone_number', $phone_number, PDO::PARAM_STR);
+    $query->bindParam(':admin_user_id', $payload->admin_user_id, PDO::PARAM_STR);
     $query->execute();
     
     if($query->rowCount() === 0){
@@ -55,10 +54,17 @@ if(auth($token)){
             $query->bindParam(':new_password', $new_password, PDO::PARAM_STR);
             $query->bindParam(':admin_user_id', $payload->admin_user_id, PDO::PARAM_STR);
             $query->bindparam(":updated_at", $datetime, PDO::PARAM_STR);
-            $status = 200;
-            $response = [
-                "msg" => "Password updated successfully",
-            ];
+            if($query->execute()){
+                $status = 200;
+                $response = [
+                    "msg" => "Password updated successfully"
+                ];
+            }else{
+                $status = 203;
+                $response = [
+                    "msg" => "Password not updated"
+                ];
+            }
         }else{
             $status = 203;
             $response = [

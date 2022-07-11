@@ -127,6 +127,26 @@ if(auth($token)){
             ];
         }
 
+        $sql = "INSERT INTO market_results (market_id, results, result_date, created_at, updated_at)
+        VALUES (:market_id, :results, :result_date, :created_at, :updated_at)";
+        $query = $con -> prepare($sql);
+        $query->bindParam(':market_id', $user['market_id'], PDO::PARAM_STR);
+        $query->bindParam(':results', $result, PDO::PARAM_STR);
+        $query->bindParam(':result_date', $result_date, PDO::PARAM_STR);
+        $query->bindparam(":created_at", $datetime, PDO::PARAM_STR);
+        $query->bindparam(":updated_at", $datetime, PDO::PARAM_STR);
+        if($query->execute()){
+            $status = 200;
+            $response = [
+                "msg" => "Result stored in market results"
+            ];
+        }else{
+            $status = 203;
+            $response = [
+                "msg" => "Market results can't be stored for user_id ".$user['user_id']
+            ];
+        }
+
         
 
     }

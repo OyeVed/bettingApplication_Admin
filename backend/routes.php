@@ -6,10 +6,14 @@
 $router->endpoint('login', './views/login', ['POST'], FALSE, ['phone_number', 'password']);
 $router->endpoint('signup', './views/signup', ['POST'], FALSE, ['phone_number', 'password', 'email', 'full_name']);
 $router->endpoint('logout', './views/logout', ['POST'], FALSE, ['phone_number']);
-$router->endpoint('reset_password', './views/reset_password', ['POST'], FALSE, ['old_password', 'new_password', 'phone_number']);
+$router->endpoint('reset_password', './views/reset_password', ['POST'], FALSE, ['old_password', 'new_password']);
 $router->endpoint('profile_save', './views/profile_save', ['POST'], FALSE, []);
 $router->endpoint('profile_fetch', './views/profile_fetch', ['GET'], FALSE, []);
 $router->endpoint('image_upload', './views/image_upload', ['POST'], FALSE, []);
+
+//forgot password route
+$router->endpoint('send_otp', './views/forgot_password/send_otp', ['POST'], FALSE, ['admin_email_id']);
+$router->endpoint('verify_otp', './views/forgot_password/verify_otp', ['POST'], FALSE, ['admin_email_id', 'otp', 'new_password']);
 
 // markets/manage_markets all routes
 $router->endpoint('fetch_market', './views/markets/manage_markets/fetch_market', ['GET'], FALSE, []);

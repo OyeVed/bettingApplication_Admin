@@ -11,8 +11,9 @@ $token = $_COOKIE["admin_jwt"];
 if(auth($token)){
 
     //fetch details from market
-    $curr_date = date("Y-m-d");
-    $sql = "SELECT mt.market_id, mt.market_fullname, mt.market_opentime, mt.market_closetime, mr.results
+    // $curr_date = date("Y-m-d");
+    $curr_day = date('l');
+    $sql = "SELECT mt.market_id, mt.market_fullname, mt.market_on_days, mt.market_opentime, mt.market_closetime, mr.results
     FROM market_table as mt
     LEFT JOIN market_results as mr
     ON mt.market_id = mr.market_id";
@@ -24,7 +25,9 @@ if(auth($token)){
         $total_closed_games = 0;
         $markets = $query->fetchAll(PDO::FETCH_OBJ);
         foreach($markets as $market){
-            if((date($market->market_opentime) < date("H-i-s")) && (date($market->market_closetime) >= date("H-i-s"))){
+            $market_on_days = $market->market_on_days;
+            $market_on_days = explode(",", $market_on_days);
+            if((date($market->market_opentime) < date("H-i-s")) && (date($market->market_closetime) >= date("H-i-s")) && (in_array($curr_day, $market_on_days))){
                 $status = "open";
                 $total_live_games += 1;
             }else{

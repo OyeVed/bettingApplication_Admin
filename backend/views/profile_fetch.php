@@ -38,12 +38,13 @@ if(auth($token)){
 
     }else{
 
-        $admin = $query->fetchAll(PDO::FETCH_OBJ)[0];
+        $admin_profile = $query->fetchAll(PDO::FETCH_OBJ)[0];
 
-        if($admin){
+        if($admin_profile){
             $status = 200;
             $response = [
-                "msg" => $admin
+                "msg" => "Admin profile fetched successfully",
+                "admin_profile" => $admin_profile
             ];
         }else{
             $status = 203;
