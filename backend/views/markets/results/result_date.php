@@ -36,8 +36,6 @@ if(auth($token)){
         do{
             $date = date('Y-m-d', strtotime($date . '+1 day'));
             $next_day = date('l', strtotime($date));
-            print_r($date."\n");
-            print_r($next_day."\n");
           }while(!in_array($next_day, $market_on_days));
         
         $status = 200;

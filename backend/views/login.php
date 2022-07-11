@@ -65,7 +65,7 @@ if($query->rowCount() === 0){
             'HS512'
         );
         // sending jwt token to frontend with cookies
-        setcookie("admin_jwt", $jwt, time()+ (86400 * 30), "/","", 0); //86400*7 expiry time to 7 days
+        setcookie("admin_jwt", $jwt, time()+ (86400 * 30), "/","", 0); //86400*30 expiry time to 30 days
 
         $status = 200;
         $response = [
