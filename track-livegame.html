@@ -175,6 +175,12 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal" id="uploadPreAssessmentId">
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Date</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="date" id="result_date">
+                            </div>
+                        </div>
                         <div class="d-flex justify-content-around align-items-center">
                             <div class="text-center">
                                 <label for="">Panna</label>
@@ -260,7 +266,7 @@
                             <div class="live_game_circle"><i class="fa fa-circle text-danger" aria-hidden="true"></i>
                             </div>
                             <p class="mt-1 mb-2 " style="font-size:15px;font-weight:700;">${element?.market_result || 'xxx-xx-xxx'}</p>
-                            ${element?.market_result ? '' : `<button class="btn-sm btn-success" style="border:none;outline:none;"data-toggle="modal" onclick='setAnnounceResultForm(${element?.market_id})' data-target="#announce_result_modal" id="announce_result_id" >Announce Result</button>`} 
+                            ${element?.market_result ? '' : `<button class="btn-sm btn-success" style="border:none;outline:none;" onclick='setAnnounceResultForm(${element?.market_id})'  id="announce_result_id" >Announce Result</button>`} 
                         </div>`
                         }
                     }
@@ -371,12 +377,47 @@
         }
         let allPannaDigit = [120, 123, 124, 125, 126, 127, 128, 129, 130, 134, 135, 136, 137, 138, 139, 140, 145, 146, 147, 148, 149, 150, 156, 157, 158, 159, 160, 167, 168, 169, 170, 178, 179, 180, 189, 190, 230, 234, 235, 236, 237, 238, 239, 240, 245, 246, 247, 248, 249, 250, 256, 257, 258, 259, 260, 267, 268, 269, 270, 278, 279, 280, 289, 290, 340, 345, 346, 347, 348, 349, 350, 356, 357, 358, 359, 360, 367, 368, 369, 370, 378, 379, 380, 389, 390, 450, 456, 457, 458, 459, 460, 467, 468, 469, 470, 478, 479, 480, 489, 490, 560, 567, 568, 569, 570, 578, 579, 580, 589, 590, 670, 678, 679, 680, 689, 690, 780, 789, 790, 890, 100, 110, 112, 113, 114, 115, 116, 117, 118, 119, 122, 133, 144, 155, 166, 177, 188, 199, 200, 220, 223, 224, 225, 226, 227, 228, 229, 233, 244, 255, 266, 277, 288, 299, 300, 330, 334, 335, 336, 337, 338, 339, 344, 355, 366, 377, 388, 399, 400, 440, 445, 446, 447, 448, 449, 455, 466, 477, 488, 499, 500, 550, 555, 556, 557, 558, 559, 566, 577, 588, 599, 600, 660, 667, 668, 669, 677, 688, 699, 700, 770, 778, 779, 788, 799, 800, 880, 889, 899, 900, 990, 000, 111, 333, 222, 444, 555, 666, 777, 888, 999]
         function setAnnounceResultForm(m_id) {
-            document.getElementById('announce_result_footer').innerHTML = ''
-            document.getElementById('announce_result_footer').innerHTML = `<button class="btn btn-success" type="button" onclick="announceResult(${m_id})">Submit</button>`
+            startLoader()
+            axiosInstance.post('result_date', {
+                "market_id": m_id
+            }).then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    $('#announce_result_modal').modal('show');
+                    document.getElementById('announce_result_footer').innerHTML = ''
+                    document.getElementById('announce_result_footer').innerHTML = `<button class="btn btn-success" type="button" onclick="announceResult(${m_id})">Submit</button>`
+                    document.getElementById('result_date').value = response?.data?.date
+                } else {
+                    if (response?.data?.is_logged_out) {
+                        localStorage.setItem("isLoggedIn", "false");
+                        location.href = "index.html";
+                    } else {
+                        $.notify({
+                            title: "",
+                            message: response.data?.msg,
+                            icon: 'fa fa-times'
+                        }, {
+                            type: "danger",
+                        });
+                    }
+                }
+                console.log(response)
+            }, (error) => {
+                console.log('error', error);
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
         }
         function announceResult(market_id) {
 
             let open_panna = document.getElementById('open_panna')
+            let result_date= document.getElementById('result_date')
             let jodi_id = document.getElementById('jodi_id')
             let close_panna = document.getElementById('close_panna')
             if (open_panna.value?.length != 3 || close_panna.value?.length != 3) {
@@ -419,14 +460,12 @@
                 });
                 return
             }
-            let todaysMOnth = new Date().getMonth() + 1
-            let todayDate = `${new Date().getFullYear()}-${todaysMOnth < 10 ? `0${todaysMOnth}` : todaysMOnth}-${new Date().getDate()}`
             $('#announce_result_modal').modal('hide');
             startLoader()
             axiosInstance.post('announce_result', {
                 "market_id": market_id,
                 "result": `${open_panna?.value}-${jodi_id?.value}-${close_panna?.value}`,
-                "result_date": todayDate
+                "result_date": result_date.value
             }).then((response) => {
                 $('#uploadPreAssessmentId')[0].reset();
                 endLoader()
