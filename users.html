@@ -337,7 +337,7 @@
                 if (isConfirm) {
                     startLoader()
                     axiosInstance.post('delete_admin_user', {
-                        "user_id": g_id
+                        "admin_user_id": g_id
                     }).then((response) => {
                         endLoader()
                         if (response.status === 200) {
