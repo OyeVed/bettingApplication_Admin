@@ -108,6 +108,8 @@
             </div>
         </div>
         <div class="tile">
+            <button class="btn btn-sm btn-primary mb-4" data-toggle="modal" data-target="#add_modal">+ Add
+                User</button>
             <div class="tile-body">
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered" id="sampleTable">
@@ -127,6 +129,65 @@
             </div>
         </div>
     </main>
+    <!-- add user modal -->
+    <div class="modal fade" id="add_modal" role="dialog">
+        <div class="modal-dialog  modal-dialog-centered ">
+
+            <!-- Modal content-->
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add User<br />
+                        <p style="text-align:left; font-size:13px;font-weight:500;">
+                        <p>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="uploadPreAssessmentId">
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Name</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" placeholder="-" id="add_user_name">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Email</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="email" placeholder="-" id="add_user_email">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Phone Number</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" maxlength="10"
+                                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" placeholder="-"
+                                    id="add_user_phone">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Password</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="password" placeholder="-" id="add_user_password">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">Confirm Password</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="password" placeholder="-" id="add_user_cpassword">
+                            </div>
+                        </div>
+                        <div class="modal-footer " style="justify-content: center;margin-top:20px;">
+                            <button class="btn btn-success" type="button" id="add_save_btn"
+                                onclick="handleAddUser()">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <!-- edit game rate modal -->
     <div class="modal fade" id="edit_game_rate_modal" role="dialog">
         <div class="modal-dialog  modal-dialog-centered ">
@@ -378,6 +439,100 @@
                     swal("Cancelled", "Your game rate is safe.", "error");
                 }
             });
+        }
+        function handleAddUser() {
+            startLoader()
+            let name = document.getElementById('add_user_name').value
+            let email = document.getElementById('add_user_email').value
+            let phone = document.getElementById('add_user_phone').value
+            let password = document.getElementById('add_user_password').value
+            let c_password = document.getElementById('add_user_cpassword').value
+            if (name === "" || email === "" || phone === "") {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Please enter all details.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            }
+            if (password !== c_password || password === "") {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Password didn't match.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            } else if (phone?.length < 10) {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Invalid phone number.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            } else if (!validateEmail(email)) {
+                endLoader()
+                $.notify({
+                    title: "",
+                    message: `Invalid email format.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+                return
+            }
+            $('#add_modal').modal('hide');
+            axiosInstance.post('signup',
+                {
+                    "phone_number": phone,
+                    "password": password,
+                    "email": email,
+                    "full_name": name
+                }
+            ).then((response) => {
+                endLoader()
+                if (response.status === 200) {
+                    $.notify({
+                        title: "",
+                        message: response.data?.msg,
+                        icon: 'fa fa-check'
+                    }, {
+                        type: "success",
+                    });
+                    getUserList();
+                } else {
+                    if (response?.data?.is_logged_out) {
+                        localStorage.setItem("isLoggedIn", "false");
+                        location.href = "index.html";
+                    } else {
+                        $.notify({
+                            title: "",
+                            message: response.data?.msg,
+                            icon: 'fa fa-times'
+                        }, {
+                            type: "danger",
+                        });
+                    }
+                }
+            }, (error) => {
+                endLoader()
+                console.log('error', error);
+                $.notify({
+                    title: "",
+                    message: `Something went wrong! Please try again.`,
+                    icon: 'fa fa-times'
+                }, {
+                    type: "danger"
+                });
+            })
         }
     </script>
 </body>
