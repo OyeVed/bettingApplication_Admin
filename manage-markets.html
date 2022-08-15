@@ -444,9 +444,6 @@
                 });
                 return
             }
-            let add_market_start_time = new Date(`Jan 1,2022 ${add_market_start}:00`).getTime()
-            let add_market_end_time = new Date(`Jan 1,2022 ${add_market_end}:00`).getTime()
-            let diff = add_market_end_time - add_market_start_time
             if (add_market_start === "") {
                 endLoader()
                 $.notify({
@@ -469,6 +466,9 @@
                 });
                 return
             }
+            let add_market_start_time = new Date(`Jan 1,2022 ${add_market_start}:00`).getTime()
+            let add_market_end_time = new Date(`Jan 1,2022 ${add_market_end}:00`).getTime()
+            let diff = add_market_end_time - add_market_start_time
             if (diff < 1) {
                 endLoader()
                 $.notify({
