@@ -128,7 +128,7 @@
                 <div class="widget-small warning coloured-icon"><i class="icon fa fa-inr fa-3x"></i>
                     <div class="info">
                         <h4>Total Withdrawals</h4>
-                        <p><b id="total_withdrawls">0</b></p>
+                        <p><b id="total_withdrawals">0</b></p>
                     </div>
                 </div>
             </div>
@@ -236,6 +236,9 @@
                     }
                     if (otherData?.total_user) {
                         $('#total_users').html(otherData?.total_user)
+                    }
+                    if (otherData?.total_withdrawals) {
+                        $('#total_withdrawals').html(otherData?.total_withdrawals)
                     }
                 } else {
                     if (response?.data?.is_logged_out) {

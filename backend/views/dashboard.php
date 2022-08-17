@@ -118,6 +118,20 @@ if(auth($token)){
                 "msg" => "Can't fetch users."
             ];
         }
+
+        // total_withdrawals
+        $sql = "SELECT SUM(transaction_amount) AS 'total_withdrawals' FROM transaction_details";
+        $query = $con -> prepare($sql);
+        if($query->execute()){
+            $total_withdrawals = $query->fetchAll(PDO::FETCH_ASSOC)[0]['total_withdrawals'];
+            $dashboard->total_withdrawals = $total_withdrawals;
+        }else{
+            $status = 203;
+            $response = [
+                "msg" => "Can't fetch Withdrawals."
+            ];
+        }
+        
         $status = 200;
         $response = [
             "msg" => $dashboard
