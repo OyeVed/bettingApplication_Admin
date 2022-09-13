@@ -24,7 +24,16 @@ if(auth($token)){
     ORDER BY mr.result_id DESC LIMIT 1";
     $query = $con -> prepare($sql);
     $query->bindparam(":market_id", $market_id, PDO::PARAM_STR);
-    if($query->execute()){
+
+    if(!$query->execute()){
+        $status = 203;
+        $response = [
+            "msg" => "Results can't be fetched"
+        ];
+        return;   
+    }
+    
+    if($query->rowCount() != 0) {
 
         //taking previous result date and morkaet in days from market table
         $info = $query->fetchAll(PDO::FETCH_ASSOC)[0];
@@ -48,7 +57,7 @@ if(auth($token)){
     }else{
         $status = 203;
         $response = [
-            "msg" => "Results can't be fetched"
+            "msg" => "No Results Fetched"
         ];
     }
     
