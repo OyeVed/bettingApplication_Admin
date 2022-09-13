@@ -52,8 +52,15 @@ if(auth($token)){
     $query->bindParam(':result_date', $result_date, PDO::PARAM_STR);
     $query->execute();
 
+    if($query->rowCount() == 0){
+        $status = 200;
+        $response = [
+            "msg" => "No users won"
+        ];
+        return;
+    }
+    
     $users_who_won = $query->fetchAll(PDO::FETCH_ASSOC);
-
     // print_r($users_who_won);
 
     foreach($users_who_won as $user){
@@ -82,6 +89,7 @@ if(auth($token)){
             $response = [
                 "msg" => "Can't fetch user's wallet balance."
             ];
+            return;
         }
         $sql = "INSERT INTO transaction_details (user_id, transaction_type, transaction_name, transaction_amount, amount_in_wallet, created_at, updated_at)
         VALUES (:user_id, :transaction_type, :transaction_name, :transaction_amount, :amount_in_wallet, :created_at, :updated_at)";
@@ -104,6 +112,7 @@ if(auth($token)){
             $response = [
                 "msg" => "Transaction failed for user_id ".$user['user_id']
             ];
+            return;
         }
 
         $sql = "INSERT INTO win_history (market_id, user_id, game_name, win_amount, created_at, updated_at)
@@ -125,6 +134,7 @@ if(auth($token)){
             $response = [
                 "msg" => "Winning data can't be stored for user_id ".$user['user_id']
             ];
+            return;
         }
 
         $sql = "INSERT INTO market_results (market_id, results, result_date, created_at, updated_at)
@@ -145,6 +155,7 @@ if(auth($token)){
             $response = [
                 "msg" => "Market results can't be stored for user_id ".$user['user_id']
             ];
+            return;
         }
 
         
