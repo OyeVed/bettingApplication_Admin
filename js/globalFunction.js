@@ -20,7 +20,7 @@ function authenticate() {
 }
 // baseURL: `/bettingApplication_Admin/backend/`,
 const axiosInstance = axios.create({
-  baseURL: `/backend/`,
+  baseURL: `/bettingApplication_Admin/backend/`,
   credentials: "include",
   withCredentials: true,
 });
@@ -179,3 +179,6 @@ const validateEmail = (email) => {
   var re = /\S+@\S+\.\S+/;
   return re.test(email);
 };
+function navigate(path) {
+  location.href = path;
+}
